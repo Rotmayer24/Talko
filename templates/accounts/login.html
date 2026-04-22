@@ -1,0 +1,35 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}Sign In{% endblock %}
+
+{% block content %}
+<div class="box">
+    <div>
+        <h1>Welcome Back</h1>
+        <p>Sign in to continue</p>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+
+        {% if form.errors %}
+            <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {{ form.as_p }}
+        <button type="submit">Sign In</button>
+    </form>
+    <div>
+        Don't have an account? <a href="{% url 'accounts:register' %}">Create One</a>
+    </div>
+</div>
+{% endblock %}

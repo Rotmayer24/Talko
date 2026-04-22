@@ -1,0 +1,11 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}Signed Out {% endblock %}
+
+{% block content %}Signed Out {% endblock %}
+<div class="box">
+    <h1>Signed Out</h1>
+    <p>You habe been signed out...</p>
+    <a href="{% url 'accounts:login' %}">Sign In Again</a>
+</div>
