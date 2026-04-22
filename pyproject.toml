@@ -5,5 +5,8 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "channels>=4.3.2",
+    "channels-sqlite>=0.1",
+    "daphne>=4.2.1",
     "django>=6.0.4",
 ]

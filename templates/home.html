@@ -1,0 +1,58 @@
+{% extends "index.html" %}
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="layout">
+    <div class="chat">
+        <div class="chat-header">
+            <h3>Chats</h3>
+            <button class="btn-new-chat">+</button>
+        </div>
+        <input type="text" class="chat-search" placeholder="Поиск...">
+        <div class="chat-list">
+            <div class="chat-item active">
+                <div class="chat-avatar">U</div>
+                <div class="chat-info">
+                    <div class="chat-name">User One</div>
+                    <div class="chat-preview">Hello there!</div>
+                </div>
+            </div>
+            <div class="chat-item">
+                <div class="chat-avatar">T</div>
+                <div class="chat-info">
+                    <div class="chat-name">Team Chat</div>
+                    <div class="chat-preview">Let's discuss the project</div>
+                </div>
+            </div>
+            <div class="chat-item">
+                <div class="chat-avatar">D</div>
+                <div class="chat-info">
+                    <div class="chat-name">Dev Group</div>
+                    <div class="chat-preview">Code review needed</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="chat-window">
+            <div class="chat-messages">
+                <div class="message own">Hello!</div>
+                <div class="message">Hi there! How are you?</div>
+                <div class="message own">I'm doing great, thanks!</div>
+            </div>
+            <input type="text" class="message-input" placeholder="Type a message...">
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="layout">
+    <div class="box">
+        <h1>Welcome to Talko</h1>
+        <p>Sign In or Sign Up to continue</p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

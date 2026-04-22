@@ -30,18 +30,6 @@
             </ul>
         </nav>
     </header>
-    
-    {% if user.is_authenticated %} 
-        <p>Ha</p>
-    
-    {% else %} 
-    
-    <p class="box-text">You are not authenticated</p>
-
-    {% endif %}
-    
-
-
     {% block content %}{% endblock %}
 </body>
 
