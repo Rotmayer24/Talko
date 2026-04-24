@@ -15,8 +15,8 @@
         <nav>
             <ul class="head-list">
                 <li><a href="/" class="head-item">Home</a></li>
-                {% if user.is_authenticated %}
-                    <li><span class="username">{{ user.username }}</span></li>
+                {% if user.is_authenticated %} 
+                    <li class="username">{{ user.username }}</li>
                     <li>
                         <form method="post" class="sign-out" action="{% url 'accounts:logout' %}">
                             {% csrf_token %}
