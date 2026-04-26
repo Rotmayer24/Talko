@@ -3,18 +3,17 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-qmm2wr1bjq=d9nylfb^+far-!vwpfsbm9i5f=l_&p*g@^jd+hk"
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -23,6 +22,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "accounts",
     "messages",
+    "channels",
 ]
 
 MIDDLEWARE = [
@@ -53,6 +53,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "Talko.wsgi.application"
+ASGI_APPLICATION = "Talko.asgi.application"
 
 
 # Database
