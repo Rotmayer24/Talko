@@ -630,7 +630,7 @@ form {
 .btn-icon-image {
   background: var(--tn-purple);
   border-color: var(--tn-purple);
-  color: white;
+  color: var(--tn-text);
 }
 
 .btn-icon-image:hover {
@@ -643,7 +643,7 @@ form {
 .btn-icon-file {
   background: var(--tn-cyan);
   border-color: var(--tn-cyan);
-  color: white;
+  color: var(--tn-text);
 }
 
 .btn-icon-file:hover {
@@ -656,7 +656,7 @@ form {
 .btn-icon-settings {
   background: var(--tn-orange);
   border-color: var(--tn-orange);
-  color: white;
+  color: var(--tn-text);
 }
 
 .btn-icon-settings:hover {
