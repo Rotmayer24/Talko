@@ -127,12 +127,12 @@
     <input type="file" id="file-input" style="display: none;" accept="*/*">
     <input type="file" id="image-input" style="display: none;" accept="image/*">
     
-    <button onclick="document.getElementById('image-input').click()" class="btn-icon" title="Upload Image">
-        Image
+    <button onclick="document.getElementById('image-input').click()" class="btn-icon btn-icon-image" title="Upload Image">
+        🖼️
     </button>
     
-    <button onclick="document.getElementById('file-input').click()" class="btn-icon" title="Upload File">
-        File
+    <button onclick="document.getElementById('file-input').click()" class="btn-icon btn-icon-file" title="Upload File">
+        📎
     </button>
     
     <input type="text"
@@ -143,8 +143,8 @@
            style="flex: 1;">
     
     {% if active_chat.is_group and user in active_chat.admins.all %}
-    <a href="{% url 'messages:group_settings' active_chat.id %}" class="btn-icon" title="Group Settings">
-        Settings
+    <a href="{% url 'messages:group_settings' active_chat.id %}" class="btn-icon btn-icon-settings" title="Group Settings">
+        ⚙️
     </a>
     {% endif %}
 </div>

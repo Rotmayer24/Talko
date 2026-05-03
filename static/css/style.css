@@ -626,6 +626,46 @@ form {
   transform: scale(1.08);
 }
 
+/* Colored Icon Buttons - Tokyo Night Style */
+.btn-icon-image {
+  background: var(--tn-purple);
+  border-color: var(--tn-purple);
+  color: white;
+}
+
+.btn-icon-image:hover {
+  background: #c9a3ff;
+  border-color: #c9a3ff;
+  box-shadow: var(--glow-purple);
+  transform: scale(1.08);
+}
+
+.btn-icon-file {
+  background: var(--tn-cyan);
+  border-color: var(--tn-cyan);
+  color: white;
+}
+
+.btn-icon-file:hover {
+  background: #9de5ff;
+  border-color: #9de5ff;
+  box-shadow: var(--glow-cyan);
+  transform: scale(1.08);
+}
+
+.btn-icon-settings {
+  background: var(--tn-orange);
+  border-color: var(--tn-orange);
+  color: white;
+}
+
+.btn-icon-settings:hover {
+  background: #ffb380;
+  border-color: #ffb380;
+  box-shadow: 0 0 12px rgba(255, 158, 100, 0.45);
+  transform: scale(1.08);
+}
+
 /* Small Button Style */
 .btn-sm {
   padding: 6px 12px;
