@@ -9,4 +9,6 @@ dependencies = [
     "channels-sqlite>=0.1",
     "daphne>=4.2.1",
     "django>=6.0.4",
+    "pillow>=10.0.0",
+    "cryptography>=42.0.0",
 ]
