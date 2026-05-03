@@ -1,7 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,19 +8,41 @@
     {% block extra_style %}{% endblock %}
     <title>{% block title %}Talko{% endblock %}</title>
 </head>
-
 <body>
     <header>
         <nav>
             <ul class="head-list">
                 <li><a href="/" class="head-item">Home</a></li>
                 {% if user.is_authenticated %} 
-                    <li class="username">{{ user.username }}</li>
-                    <li>
-                        <form method="post" class="sign-out" action="{% url 'accounts:logout' %}">
-                            {% csrf_token %}
-                            <button type="submit" class="sign-out">Logout</button>
-                        </form>
+                    <li class="dropdown-menu">
+                        <button class="dropdown-toggle" id="dropdownToggle" onclick="toggleDropdown()">
+                            Other
+                            {% if unread_notifications_count > 0 %}
+                            <span class="dropdown-badge">{{ unread_notifications_count }}</span>
+                            {% endif %}
+                        </button>
+                        <div class="dropdown-content" id="dropdownContent">
+                            <a href="{% url 'accounts:search' %}" class="dropdown-item">Search</a>
+                            <a href="{% url 'accounts:requests' %}" class="dropdown-item">Requests</a>
+                            <a href="{% url 'accounts:notifications' %}" class="dropdown-item">
+                                Notifications
+                                {% if unread_notifications_count > 0 %}
+                                <span class="dropdown-item-badge">{{ unread_notifications_count }}</span>
+                                {% endif %}
+                            </a>
+                        </div>
+                    </li>
+                    <li class="user-menu">
+                        <a href="{% url 'accounts:profile' %}" class="user-profile-link">
+                            <div class="header-avatar">
+                                {% if user.profile.avatar %}
+                                    <img src="{{ user.profile.avatar.url }}" alt="Avatar">
+                                {% else %}
+                                    <span>{{ user.username|first|upper }}</span>
+                                {% endif %}
+                            </div>
+                            <span class="header-username">{{ user.username }}</span>
+                        </a>
                     </li>
                 {% else %}
                     <li><a href="{% url 'accounts:login' %}" class="sign-in">Sign In</a></li>
@@ -30,7 +51,25 @@
             </ul>
         </nav>
     </header>
+    
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdownContent');
+            const toggle = document.getElementById('dropdownToggle');
+            dropdown.classList.toggle('show');
+            toggle.classList.toggle('active');
+        }
+        
+        // Закрыть dropdown при клике вне его
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('dropdownContent');
+            const toggle = document.getElementById('dropdownToggle');
+            if (dropdown && toggle && !event.target.closest('.dropdown-menu')) {
+                dropdown.classList.remove('show');
+                toggle.classList.remove('active');
+            }
+        });
+    </script>
     {% block content %}{% endblock %}
 </body>
-
 </html>
