@@ -990,7 +990,7 @@ textarea {
   transition: all 0.22s ease;
   border-radius: 99px;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .dropdown-toggle:hover {
