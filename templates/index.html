@@ -13,6 +13,9 @@
         <nav>
             <ul class="head-list">
                 {% if user.is_authenticated %} 
+                    <li class="burger-menu" id="burgerMenu" onclick="toggleSidebar()">☰</li>
+                {% endif %}
+                {% if user.is_authenticated %} 
                     <li class="dropdown-menu">
                         <button class="dropdown-toggle" id="dropdownToggle" onclick="toggleDropdown()">
                             Settings
@@ -55,6 +58,11 @@
     </header>
     
     <script>
+        function toggleSidebar() {
+            const chat = document.querySelector('.chat');
+            chat.classList.toggle('show');
+        }
+        
         function toggleDropdown() {
             const dropdown = document.getElementById('dropdownContent');
             const toggle = document.getElementById('dropdownToggle');
@@ -66,9 +74,19 @@
         document.addEventListener('click', function(event) {
             const dropdown = document.getElementById('dropdownContent');
             const toggle = document.getElementById('dropdownToggle');
+            const chat = document.querySelector('.chat');
+            const burger = document.getElementById('burgerMenu');
+            
             if (dropdown && toggle && !event.target.closest('.dropdown-menu')) {
                 dropdown.classList.remove('show');
                 toggle.classList.remove('active');
+            }
+            
+            // Закрыть sidebar при клике вне его на мобильном
+            if (chat && burger && window.innerWidth < 768) {
+                if (!event.target.closest('.chat') && !event.target.closest('.burger-menu')) {
+                    chat.classList.remove('show');
+                }
             }
         });
     </script>
