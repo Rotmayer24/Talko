@@ -628,40 +628,40 @@ form {
 
 /* Colored Icon Buttons - Tokyo Night Style */
 .btn-icon-image {
-  background: var(--tn-purple);
-  border-color: var(--tn-purple);
-  color: var(--tn-text);
+  background: var(--tn-overlay);
+  border-color: var(--tn-muted);
+  color: var(--tn-purple);
 }
 
 .btn-icon-image:hover {
-  background: #c9a3ff;
-  border-color: #c9a3ff;
+  background: rgba(187, 154, 247, 0.1);
+  border-color: var(--tn-purple);
   box-shadow: var(--glow-purple);
   transform: scale(1.08);
 }
 
 .btn-icon-file {
-  background: var(--tn-cyan);
-  border-color: var(--tn-cyan);
-  color: var(--tn-text);
+  background: var(--tn-overlay);
+  border-color: var(--tn-muted);
+  color: var(--tn-cyan);
 }
 
 .btn-icon-file:hover {
-  background: #9de5ff;
-  border-color: #9de5ff;
+  background: rgba(125, 207, 255, 0.1);
+  border-color: var(--tn-cyan);
   box-shadow: var(--glow-cyan);
   transform: scale(1.08);
 }
 
 .btn-icon-settings {
-  background: var(--tn-orange);
-  border-color: var(--tn-orange);
-  color: var(--tn-text);
+  background: var(--tn-overlay);
+  border-color: var(--tn-muted);
+  color: var(--tn-orange);
 }
 
 .btn-icon-settings:hover {
-  background: #ffb380;
-  border-color: #ffb380;
+  background: rgba(255, 158, 100, 0.1);
+  border-color: var(--tn-orange);
   box-shadow: 0 0 12px rgba(255, 158, 100, 0.45);
   transform: scale(1.08);
 }
