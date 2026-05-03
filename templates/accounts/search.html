@@ -1,0 +1,109 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="box" style="max-width: 700px;">
+    <h2 style="margin-bottom: 20px; color: var(--tn-blue);">Search Users & Groups</h2>
+    
+    <form method="get" style="margin-bottom: 30px;">
+        <div style="position: relative;">
+            <input type="text" 
+                   name="q" 
+                   id="search-input"
+                   value="{{ query }}"
+                   placeholder="Search by username or group name..." 
+                   class="chat-search"
+                   style="margin: 0; width: 100%; padding-right: 50px;"
+                   autofocus>
+            <button type="submit" class="btn-search">
+                🔍
+            </button>
+        </div>
+    </form>
+    
+    <div id="search-results">
+        {% if query %}
+            {% if users or groups %}
+                
+                {% if users %}
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: var(--tn-text); margin-bottom: 15px;">👤 Users</h3>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        {% for data in users %}
+                        <div style="display: flex; gap: 10px; align-items: center; justify-content: space-between; padding: 12px; background: var(--tn-surface); border-radius: 8px; border: 1px solid var(--tn-muted);">
+                            <div style="display: flex; gap: 12px; align-items: center;">
+                                <div class="chat-avatar" style="width: 45px; height: 45px;">
+                                    {% if data.user.profile.avatar %}
+                                        <img src="{{ data.user.profile.avatar.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                    {% else %}
+                                        {{ data.user.username|first|upper }}
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <div style="color: var(--tn-text); font-weight: 600;">{{ data.user.username }}</div>
+                                    {% if data.user.profile.bio %}
+                                    <div style="color: var(--tn-text-dim); font-size: 0.8rem;">{{ data.user.profile.bio|truncatewords:10 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            {% if data.status == 'friend' %}
+                                <span style="color: var(--tn-green); font-size: 0.85rem;">✓ Friend</span>
+                            {% elif data.status == 'pending' %}
+                                <span style="color: var(--tn-orange); font-size: 0.85rem;">⏳ Pending</span>
+                            {% else %}
+                                <a href="{% url 'accounts:add_friend' data.user.id %}" class="btn-add-friend">+</a>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if groups %}
+                <div>
+                    <h3 style="color: var(--tn-text); margin-bottom: 15px;">👥 Groups</h3>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        {% for data in groups %}
+                        <div style="display: flex; gap: 10px; align-items: center; justify-content: space-between; padding: 12px; background: var(--tn-surface); border-radius: 8px; border: 1px solid var(--tn-muted);">
+                            <div style="display: flex; gap: 12px; align-items: center;">
+                                <div class="chat-avatar" style="width: 45px; height: 45px;">
+                                    {% if data.group.group_avatar %}
+                                        <img src="{{ data.group.group_avatar.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                    {% else %}
+                                        👥
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <div style="color: var(--tn-text); font-weight: 600;">{{ data.group.group_name }}</div>
+                                    <div style="color: var(--tn-text-dim); font-size: 0.8rem;">{{ data.group.users.count }} members</div>
+                                </div>
+                            </div>
+                            
+                            {% if data.is_member %}
+                                <span style="color: var(--tn-green); font-size: 0.85rem;">✓ Member</span>
+                            {% else %}
+                                <a href="{% url 'messages:join_group' data.group.id %}" 
+                                   style="padding: 8px 16px; background: var(--tn-blue); color: white; border-radius: 6px; text-decoration: none; font-size: 0.85rem;">
+                                    Join
+                                </a>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+            {% else %}
+                <p style="color: var(--tn-text-dim); text-align: center; padding: 40px;">
+                    No results found for "{{ query }}"
+                </p>
+            {% endif %}
+        {% else %}
+            <p style="color: var(--tn-text-dim); text-align: center; padding: 40px;">
+                Enter a username or group name to search
+            </p>
+        {% endif %}
+    </div>
+    
+    <a href="/" style="display: block; text-align: center; margin-top: 30px; color: var(--tn-text-dim); text-decoration: none;">Back to Home</a>
+</div>
+{% endblock %}

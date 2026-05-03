@@ -1,0 +1,48 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="box" style="max-width: 600px;">
+    <h2 style="margin-bottom: 30px; color: var(--tn-blue);">Create Group</h2>
+    
+    <form method="post" enctype="multipart/form-data" style="width: 100%; display: flex; flex-direction: column; gap: 20px;">
+        {% csrf_token %}
+        
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label class="label">Group Name</label>
+            <input type="text" name="group_name" required 
+                   style="width: 100%; padding: 12px; background: var(--tn-surface); border: 1px solid var(--tn-muted); border-radius: 8px; color: var(--tn-text); font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">
+        </div>
+        
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label class="label">Group Avatar (optional)</label>
+            <input type="file" name="group_avatar" accept="image/*"
+                   style="width: 100%; padding: 12px; background: var(--tn-surface); border: 1px solid var(--tn-muted); border-radius: 8px; color: var(--tn-text); font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">
+        </div>
+        
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label class="label">Add Members</label>
+            <div style="max-height: 300px; overflow-y: auto; padding: 10px; background: var(--tn-surface); border: 1px solid var(--tn-muted); border-radius: 8px;">
+                {% for friend in friends %}
+                <label style="display: flex; align-items: center; gap: 10px; padding: 8px; cursor: pointer; border-radius: 6px; transition: background 0.2s;">
+                    <input type="checkbox" name="users" value="{{ friend.id }}">
+                    <div class="chat-avatar" style="width: 35px; height: 35px; font-size: 0.9rem;">
+                        {% if friend.profile.avatar %}
+                            <img src="{{ friend.profile.avatar.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        {% else %}
+                            {{ friend.username|first|upper }}
+                        {% endif %}
+                    </div>
+                    <span style="color: var(--tn-text);">{{ friend.username }}</span>
+                </label>
+                {% empty %}
+                <p style="color: var(--tn-text-dim); text-align: center; padding: 20px;">No friends to add</p>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div style="display: flex; gap: 15px; margin-top: 10px;">
+            <button type="submit" class="btn btn-primary">Create Group</button>
+            <a href="/" class="btn">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

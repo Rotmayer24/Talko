@@ -1,0 +1,42 @@
+{% extends "index.html" %}
+{% load static %}
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="box" style="max-width: 600px;">
+    <h2 style="margin-bottom: 30px; color: var(--tn-blue);">Profile</h2>
+    
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%;">
+        
+        <div style="width: 120px; height: 120px; border-radius: 50%; overflow: hidden; border: 3px solid var(--tn-blue); display: flex; align-items: center; justify-content: center; background: var(--tn-surface);">
+            {% if profile.avatar %}
+                <img src="{{ profile.avatar.url }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+            {% else %}
+                <span style="font-size: 48px; color: var(--tn-blue); font-weight: bold;">{{ user.username|first|upper }}</span>
+            {% endif %}
+        </div>
+        
+        <div style="text-align: center; width: 100%;">
+            <h3 style="color: var(--tn-text); margin-bottom: 5px;">{{ user.username }}</h3>
+            <p style="color: var(--tn-text-dim); font-size: 0.85rem;">{{ user.email }}</p>
+        </div>
+        
+        {% if profile.bio %}
+        <div style="width: 100%; padding: 15px; background: var(--tn-surface); border-radius: 8px; border: 1px solid var(--tn-muted);">
+            <p style="color: var(--tn-text); font-size: 0.9rem; line-height: 1.5;">{{ profile.bio }}</p>
+        </div>
+        {% endif %}
+        
+        <div style="display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; justify-content: center;">
+            <a href="{% url 'accounts:edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+            <a href="{% url 'accounts:change_password' %}" class="btn btn-secondary">Change Password</a>
+            <form method="post" action="{% url 'accounts:logout' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-logout">Logout</button>
+            </form>
+        </div>
+        
+        <a href="/" style="color: var(--tn-text-dim); font-size: 0.85rem; margin-top: 10px; text-decoration: none;">Back to Home</a>
+    </div>
+</div>
+{% endblock %}
