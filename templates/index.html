@@ -12,11 +12,10 @@
     <header>
         <nav>
             <ul class="head-list">
-                <li><a href="/" class="head-item">Home</a></li>
                 {% if user.is_authenticated %} 
                     <li class="dropdown-menu">
                         <button class="dropdown-toggle" id="dropdownToggle" onclick="toggleDropdown()">
-                            Other
+                            Settings
                             {% if unread_notifications_count > 0 %}
                             <span class="dropdown-badge">{{ unread_notifications_count }}</span>
                             {% endif %}
@@ -32,6 +31,9 @@
                             </a>
                         </div>
                     </li>
+                {% endif %}
+                <li><a href="/" class="head-item">Home</a></li>
+                {% if user.is_authenticated %} 
                     <li class="user-menu">
                         <a href="{% url 'accounts:profile' %}" class="user-profile-link">
                             <div class="header-avatar">

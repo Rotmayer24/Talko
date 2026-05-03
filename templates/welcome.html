@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Welcome to Talko</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul class="head-list">
+                <li><a href="/" class="head-item">Home</a></li>
+                <li><a href="{% url 'accounts:login' %}" class="sign-in">Sign In</a></li>
+                <li><a href="{% url 'accounts:register' %}" class="sign-up">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="welcome-container">
+        <div class="welcome-hero">
+            <h1 class="welcome-title">Welcome to Talko</h1>
+            <p class="welcome-subtitle">Secure messaging platform with end-to-end encryption</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">Chat</div>
+                <h3>Real-time Messaging</h3>
+                <p>Instant message delivery with WebSocket technology</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">Lock</div>
+                <h3>End-to-End Encryption</h3>
+                <p>Your messages are secure with secret chats</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">Group</div>
+                <h3>Groups & Friends</h3>
+                <p>Create group chats and connect with friends</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">File</div>
+                <h3>File Sharing</h3>
+                <p>Share images and files securely</p>
+            </div>
+        </div>
+        
+        <div class="welcome-actions">
+            <a href="{% url 'accounts:register' %}" class="btn-welcome btn-primary">Get Started</a>
+            <a href="{% url 'accounts:login' %}" class="btn-welcome btn-secondary">Sign In</a>
+        </div>
+    </div>
+</body>
+</html>

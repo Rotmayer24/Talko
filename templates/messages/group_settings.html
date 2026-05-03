@@ -47,9 +47,9 @@
                     <div style="color: var(--tn-text); font-weight: 600;">
                         {{ member.username }}
                         {% if member == group.created_by %}
-                        <span style="color: var(--tn-blue); font-size: 0.8rem;">👑 Creator</span>
+                        <span style="color: var(--tn-blue); font-size: 0.8rem;">Creator</span>
                         {% elif member in admins %}
-                        <span style="color: var(--tn-purple); font-size: 0.8rem;">⭐ Admin</span>
+                        <span style="color: var(--tn-purple); font-size: 0.8rem;">Admin</span>
                         {% endif %}
                     </div>
                 </div>

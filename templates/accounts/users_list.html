@@ -1,0 +1,40 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="box" style="max-width: 600px;">
+    <h2 style="margin-bottom: 20px; color: var(--tn-blue);">Find Users</h2>
+    
+    <form method="get" style="margin-bottom: 20px;">
+        <input type="text" 
+               name="search" 
+               value="{{ search_query }}"
+               placeholder="Search by username..." 
+               class="chat-search"
+               style="margin: 0; width: 100%;">
+    </form>
+    
+    <div style="width: 100%; display: flex; flex-direction: column; gap: 12px;">
+        {% for data in user_data %}
+            <div style="display: flex; gap: 10px; align-items: center; justify-content: space-between; padding: 10px; background: var(--tn-surface); border-radius: 8px; border: 1px solid var(--tn-muted);">
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <div class="chat-avatar" style="width: 40px; height: 40px; font-size: 1rem;">
+                        {{ data.user.username|first|upper }}
+                    </div>
+                    <span style="color: var(--tn-text);">{{ data.user.username }}</span>
+                </div>
+                
+                {% if data.status == 'friend' %}
+                    <span style="color: var(--tn-green); font-size: 0.85rem;">Friend</span>
+                {% elif data.status == 'pending' %}
+                    <span style="color: var(--tn-orange); font-size: 0.85rem;">Pending</span>
+                {% else %}
+                    <a href="{% url 'accounts:add_friend' data.user.id %}" class="btn-add-friend">+</a>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p style="color: var(--tn-text-dim); text-align: center;">No users found</p>
+        {% endfor %}
+    </div>
+    
+    <a href="/" style="display: block; text-align: center; margin-top: 20px; color: var(--tn-text-dim); text-decoration: none;">Back to Home</a>
+</div>
+{% endblock %}
