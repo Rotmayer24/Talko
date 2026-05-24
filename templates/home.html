@@ -2,6 +2,8 @@
 {% load static %}
 {% block title %}Home{% endblock %}
 
+{% block extra_style %}{% endblock %}
+
 {% block content %}
 {% if user.is_authenticated %}
 <div class="layout">
@@ -9,9 +11,9 @@
     <div class="chat">
         <div class="chat-header">
             <h3>Chats</h3>
-            <div style="display: flex; gap: 8px;">
-                <a href="{% url 'messages:create_group' %}" class="btn-new-chat" title="Create Group">+</a>
-                <a href="{% url 'accounts:search' %}" class="btn-new-chat" title="Search">+</a>
+            <div style="display: flex; gap: 6px;">
+                <a href="{% url 'messages:create_group' %}" class="btn-new-group" title="Create Group">👥 Group</a>
+                <a href="{% url 'accounts:search' %}" class="btn-search-users" title="Find Users">👤 Friend</a>
             </div>
         </div>
 
@@ -46,7 +48,6 @@
                 {% else %}
                     {% for u in chat.users.all %}
                         {% if u != request.user %}
-
                             <a class="chat-item {% if active_chat.id == chat.id %}active{% endif %}"
                                href="/?chat={{ chat.id }}"
                                style="text-decoration:none; color:inherit;">
@@ -70,7 +71,6 @@
                                 </div>
 
                             </a>
-
                         {% endif %}
                     {% endfor %}
                 {% endif %}

@@ -9,6 +9,7 @@ urlpatterns = [
     path("", index, name="index"),
     path("accounts/", include("accounts.urls")),
     path("messages/", include("messages.urls")),
+    path("casino/", include("casino.urls")),
 ]
 
 if settings.DEBUG:

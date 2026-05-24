@@ -1,19 +1,124 @@
 {% extends "index.html" %}
 {% block content %}
+<style>
+.search-result-item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    background: var(--tn-surface);
+    border-radius: 8px;
+    border: 1px solid var(--tn-muted);
+    transition: all 0.15s ease;
+}
+.search-result-item:hover {
+    border-color: var(--tn-subtle);
+}
+.user-info {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+.user-details .username {
+    color: var(--tn-text);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+.user-details .bio {
+    color: var(--tn-text-dim);
+    font-size: 0.8rem;
+}
+.group-info {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+.group-details .group-name {
+    color: var(--tn-text);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+.group-details .group-meta {
+    color: var(--tn-text-dim);
+    font-size: 0.8rem;
+}
+.action-badge {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.action-badge.friend { background: rgba(158, 206, 106, 0.15); color: var(--tn-green); border: 1px solid rgba(158, 206, 106, 0.3); }
+.action-badge.pending { background: rgba(255, 158, 100, 0.15); color: var(--tn-orange); border: 1px solid rgba(255, 158, 100, 0.3); }
+.action-badge.member { background: rgba(122, 162, 247, 0.15); color: var(--tn-blue); border: 1px solid rgba(122, 162, 247, 0.3); }
+
+.btn-add-friend {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 8px 16px;
+    background: var(--tn-green);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    text-decoration: none;
+}
+.btn-add-friend:hover {
+    background: var(--tn-cyan);
+    box-shadow: 0 0 12px rgba(125, 207, 255, 0.4);
+    transform: scale(1.05);
+    text-decoration: none;
+    color: white;
+}
+
+.btn-join-group {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 8px 16px;
+    background: var(--tn-purple);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    text-decoration: none;
+}
+.btn-join-group:hover {
+    background: #b388ff;
+    box-shadow: 0 0 12px rgba(187, 154, 247, 0.4);
+    transform: scale(1.05);
+    text-decoration: none;
+    color: white;
+}
+</style>
+
 <div class="box" style="max-width: 700px;">
     <h2 style="margin-bottom: 20px; color: var(--tn-blue);">Search Users & Groups</h2>
     
     <form method="get" style="margin-bottom: 30px;">
-        <div style="position: relative;">
+        <div style="display: flex; gap: 8px; align-items: stretch;">
             <input type="text" 
                    name="q" 
                    id="search-input"
                    value="{{ query }}"
                    placeholder="Search by username or group name..." 
                    class="chat-search"
-                   style="margin: 0; width: 100%; padding-right: 50px;"
+                   style="margin: 0; flex: 1;"
                    autofocus>
-            <button type="submit" class="btn-search">
+            <button type="submit" class="btn-search" style="position: static; transform: none;">
                 Search
             </button>
         </div>
@@ -26,31 +131,31 @@
                 {% if users %}
                 <div style="margin-bottom: 30px;">
                     <h3 style="color: var(--tn-text); margin-bottom: 15px;">👤 Users</h3>
-                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
                         {% for data in users %}
-                        <div style="display: flex; gap: 10px; align-items: center; justify-content: space-between; padding: 12px; background: var(--tn-surface); border-radius: 8px; border: 1px solid var(--tn-muted);">
-                            <div style="display: flex; gap: 12px; align-items: center;">
-                                <div class="chat-avatar" style="width: 45px; height: 45px;">
+                        <div class="search-result-item">
+                            <div class="user-info">
+                                <div class="chat-avatar" style="width: 45px; height: 45px; background: var(--tn-green);">
                                     {% if data.user.profile.avatar %}
                                         <img src="{{ data.user.profile.avatar.url }}" style="width: 100%; height: 100%; object-fit: cover;">
                                     {% else %}
                                         {{ data.user.username|first|upper }}
                                     {% endif %}
                                 </div>
-                                <div>
-                                    <div style="color: var(--tn-text); font-weight: 600;">{{ data.user.username }}</div>
+                                <div class="user-details">
+                                    <div class="username">{{ data.user.username }}</div>
                                     {% if data.user.profile.bio %}
-                                    <div style="color: var(--tn-text-dim); font-size: 0.8rem;">{{ data.user.profile.bio|truncatewords:10 }}</div>
+                                    <div class="bio">{{ data.user.profile.bio|truncatewords:10 }}</div>
                                     {% endif %}
                                 </div>
                             </div>
                             
                             {% if data.status == 'friend' %}
-                                <span style="color: var(--tn-green); font-size: 0.85rem;">Friend</span>
+                                <span class="action-badge friend">✓ Friends</span>
                             {% elif data.status == 'pending' %}
-                                <span style="color: var(--tn-orange); font-size: 0.85rem;">Pending</span>
+                                <span class="action-badge pending">⏳ Pending</span>
                             {% else %}
-                                <a href="{% url 'accounts:add_friend' data.user.id %}" class="btn-add-friend">+</a>
+                                <a href="{% url 'accounts:add_friend' data.user.id %}" class="btn-add-friend">＋ Add Friend</a>
                             {% endif %}
                         </div>
                         {% endfor %}
@@ -60,31 +165,28 @@
                 
                 {% if groups %}
                 <div>
-                    <h3 style="color: var(--tn-text); margin-bottom: 15px;">Groups</h3>
-                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <h3 style="color: var(--tn-text); margin-bottom: 15px;">👥 Groups</h3>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
                         {% for data in groups %}
-                        <div style="display: flex; gap: 10px; align-items: center; justify-content: space-between; padding: 12px; background: var(--tn-surface); border-radius: 8px; border: 1px solid var(--tn-muted);">
-                            <div style="display: flex; gap: 12px; align-items: center;">
-                                <div class="chat-avatar" style="width: 45px; height: 45px;">
+                        <div class="search-result-item" style="border-left: 3px solid var(--tn-purple);">
+                            <div class="group-info">
+                                <div class="chat-avatar" style="width: 45px; height: 45px; background: var(--tn-purple);">
                                     {% if data.group.group_avatar %}
                                         <img src="{{ data.group.group_avatar.url }}" style="width: 100%; height: 100%; object-fit: cover;">
                                     {% else %}
-                                        Group
+                                        G
                                     {% endif %}
                                 </div>
-                                <div>
-                                    <div style="color: var(--tn-text); font-weight: 600;">{{ data.group.group_name }}</div>
-                                    <div style="color: var(--tn-text-dim); font-size: 0.8rem;">{{ data.group.users.count }} members</div>
+                                <div class="group-details">
+                                    <div class="group-name">{{ data.group.group_name }}</div>
+                                    <div class="group-meta">{{ data.group.users.count }} members</div>
                                 </div>
                             </div>
                             
                             {% if data.is_member %}
-                                <span style="color: var(--tn-green); font-size: 0.85rem;">Member</span>
+                                <span class="action-badge member">✓ Member</span>
                             {% else %}
-                                <a href="{% url 'messages:join_group' data.group.id %}" 
-                                   style="padding: 8px 16px; background: var(--tn-blue); color: white; border-radius: 6px; text-decoration: none; font-size: 0.85rem;">
-                                    Join
-                                </a>
+                                <a href="{% url 'messages:join_group' data.group.id %}" class="btn-join-group">＋ Join Group</a>
                             {% endif %}
                         </div>
                         {% endfor %}

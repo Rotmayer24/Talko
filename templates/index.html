@@ -36,6 +36,9 @@
                     </li>
                 {% endif %}
                 <li><a href="/" class="head-item">Home</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'casino:home' %}" class="head-item">Casino</a></li>
+                {% endif %}
                 {% if user.is_authenticated %} 
                     <li class="user-menu">
                         <a href="{% url 'accounts:profile' %}" class="user-profile-link">

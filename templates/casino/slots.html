@@ -1,0 +1,358 @@
+{% extends "index.html" %}
+{% block title %}Slots — Talko Casino{% endblock %}
+{% block content %}
+<style>
+.slots-container {
+    max-width: 700px;
+    margin: 90px auto 40px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+}
+.slots-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.slots-header h1 { font-size: 1.5rem; color: var(--tn-green); }
+
+.machine {
+    background: linear-gradient(180deg, #1a1a2e, #16213e);
+    border: 3px solid #e2b714;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 0 40px rgba(226, 183, 20, 0.15), inset 0 0 30px rgba(0,0,0,0.4);
+    margin-bottom: 20px;
+}
+
+.reels-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 25px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 12px;
+    padding: 20px;
+    border: 2px solid rgba(226, 183, 20, 0.3);
+}
+
+.reel {
+    width: 120px;
+    height: 120px;
+    background: #0d0d1a;
+    border: 2px solid #444;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    transition: all 0.1s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+.reel.spinning {
+    animation: reelSpin 0.1s linear infinite;
+}
+
+@keyframes reelSpin {
+    0% { transform: translateY(0); }
+    25% { transform: translateY(-5px); }
+    50% { transform: translateY(0); }
+    75% { transform: translateY(5px); }
+    100% { transform: translateY(0); }
+}
+
+.reel.stop1 { animation: none; transition: all 0.3s ease; }
+.reel.stop2 { animation: none; transition: all 0.3s ease 0.2s; }
+.reel.stop3 { animation: none; transition: all 0.3s ease 0.4s; }
+
+.reel.win-highlight {
+    border-color: #ffd700;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+.slots-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.bet-wrapper {
+    display: flex;
+    align-items: center;
+    border: 2px solid var(--tn-muted);
+    border-radius: 10px;
+    background: var(--tn-surface);
+    overflow: hidden;
+    transition: border-color 0.22s ease, box-shadow 0.22s ease;
+}
+.bet-wrapper:focus-within {
+    border-color: var(--tn-orange);
+    box-shadow: 0 0 12px rgba(255, 158, 100, 0.25);
+}
+.bet-input {
+    width: 70px;
+    padding: 10px 0;
+    background: transparent;
+    border: none;
+    color: var(--tn-text);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-align: center;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+.bet-input::-webkit-inner-spin-button,
+.bet-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.bet-input:focus {
+    outline: none;
+}
+.bet-btn {
+    width: 36px;
+    height: 44px;
+    background: transparent;
+    border: none;
+    color: var(--tn-text-dim);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    user-select: none;
+}
+.bet-btn:hover {
+    color: var(--tn-text);
+    background: rgba(255,255,255,0.05);
+}
+.bet-btn:active {
+    background: rgba(255,255,255,0.1);
+}
+.slots-controls input {
+    width: 120px;
+    padding: 10px 14px;
+    background: var(--tn-surface);
+    border: 1px solid var(--tn-muted);
+    border-radius: 8px;
+    color: var(--tn-text);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 1rem;
+    text-align: center;
+}
+.btn-spin {
+    padding: 12px 40px;
+    background: linear-gradient(135deg, #e2b714, #f5c842);
+    border: none;
+    border-radius: 10px;
+    color: #1a1a2e;
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+.btn-spin:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(226, 183, 20, 0.5);
+}
+.btn-spin:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.result-display {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    min-height: 40px;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+.result-display.win {
+    color: #ffd700;
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+.result-display.lose {
+    color: var(--tn-text-dim);
+}
+
+.payout-table {
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    padding: 15px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+.payout-table h3 {
+    color: var(--tn-text-dim);
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+    text-align: center;
+    letter-spacing: 0.1em;
+}
+.payout-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 0.85rem;
+    color: var(--tn-text-dim);
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.payout-row:last-child { border-bottom: none; }
+.payout-row .symbols { display: flex; gap: 4px; }
+.payout-row .mult { color: var(--tn-green); }
+
+@media (max-width: 600px) {
+    .reel { width: 90px; height: 90px; font-size: 3rem; }
+    .machine { padding: 20px 15px; }
+}
+</style>
+
+<div class="slots-container">
+    <div class="slots-header">
+        <h1>🎰 Slots</h1>
+        <div style="text-align: right;">
+            <div style="font-size: 0.7rem; color: var(--tn-text-dim);">BALANCE</div>
+            <div id="balance" style="font-size: 1.2rem; color: var(--tn-orange); font-weight: 700;">{{ profile.balance }}</div>
+        </div>
+    </div>
+
+    <div class="machine">
+        <div class="reels-container" id="reelsContainer">
+            <div class="reel" id="reel1">🍒</div>
+            <div class="reel" id="reel2">🍒</div>
+            <div class="reel" id="reel3">🍒</div>
+        </div>
+
+        <div id="resultDisplay" class="result-display">Pull the lever and try your luck!</div>
+
+        <div class="slots-controls">
+            <div class="bet-wrapper">
+                <button class="bet-btn bet-minus" onclick="adjustBet(-10)">−</button>
+                <input type="number" id="betAmount" value="10" min="1" max="{{ profile.balance }}" class="bet-input">
+                <button class="bet-btn bet-plus" onclick="adjustBet(10)">+</button>
+            </div>
+            <button id="spinBtn" class="btn-spin">🎰 SPIN</button>
+        </div>
+    </div>
+
+    <div class="payout-table">
+        <h3>💰 PAYOUT TABLE</h3>
+        <div class="payout-row"><span class="symbols">🍒🍒🍒</span><span class="mult">x5</span></div>
+        <div class="payout-row"><span class="symbols">🍋🍋🍋</span><span class="mult">x8</span></div>
+        <div class="payout-row"><span class="symbols">🍊🍊🍊</span><span class="mult">x10</span></div>
+        <div class="payout-row"><span class="symbols">🍇🍇🍇</span><span class="mult">x15</span></div>
+        <div class="payout-row"><span class="symbols">🔔🔔🔔</span><span class="mult">x20</span></div>
+        <div class="payout-row"><span class="symbols">💎💎💎</span><span class="mult">x30</span></div>
+        <div class="payout-row"><span class="symbols">7️⃣7️⃣7️⃣</span><span class="mult">x50</span></div>
+        <div class="payout-row"><span>Two matching</span><span class="mult">x2-x10</span></div>
+    </div>
+
+    <a href="{% url 'casino:home' %}" style="display: block; text-align: center; color: var(--tn-text-dim); text-decoration: none; font-size: 0.85rem; margin-top: 15px;">← Back to Casino</a>
+</div>
+
+<script>
+const csrf = "{{ csrf_token }}";
+const reel1 = document.getElementById('reel1');
+const reel2 = document.getElementById('reel2');
+const reel3 = document.getElementById('reel3');
+const resultDisplay = document.getElementById('resultDisplay');
+const balanceEl = document.getElementById('balance');
+const spinBtn = document.getElementById('spinBtn');
+const betAmount = document.getElementById('betAmount');
+const betInput = betAmount;
+
+function adjustBet(delta) {
+    let val = parseInt(betInput.value) || 1;
+    let min = parseInt(betInput.min) || 1;
+    let max = parseInt(betInput.max) || 99999;
+    val = Math.max(min, Math.min(max, val + delta));
+    betInput.value = val;
+}
+
+function setSpinning(spinning) {
+    [reel1, reel2, reel3].forEach(r => {
+        r.classList.toggle('spinning', spinning);
+        r.classList.remove('win-highlight');
+    });
+}
+
+function spin() {
+    const amount = parseInt(betAmount.value);
+    if (!amount || amount <= 0) return alert('Enter a valid bet amount');
+
+    spinBtn.disabled = true;
+    setSpinning(true);
+    resultDisplay.textContent = 'Spinning...';
+    resultDisplay.className = 'result-display';
+
+    fetch("{% url 'casino:slots_spin' %}", {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'X-CSRFToken': csrf},
+        body: JSON.stringify({ bet_amount: amount }),
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.error) {
+            setSpinning(false);
+            spinBtn.disabled = false;
+            resultDisplay.textContent = data.error;
+            return;
+        }
+        setTimeout(() => {
+            reel1.classList.remove('spinning');
+            reel1.textContent = data.reels[0];
+            reel1.classList.add('stop1');
+        }, 300);
+
+        setTimeout(() => {
+            reel2.classList.remove('spinning');
+            reel2.textContent = data.reels[1];
+            reel2.classList.add('stop2');
+        }, 600);
+
+        setTimeout(() => {
+            reel3.classList.remove('spinning');
+            reel3.textContent = data.reels[2];
+            reel3.classList.add('stop3');
+
+            balanceEl.textContent = data.balance;
+            betAmount.max = data.balance;
+
+            if (data.win) {
+                resultDisplay.textContent = `💰 WIN! +${data.payout} coins (x${data.multiplier})`;
+                resultDisplay.className = 'result-display win';
+                [reel1, reel2, reel3].forEach(r => r.classList.add('win-highlight'));
+            } else {
+                resultDisplay.textContent = `😔 No luck — lost ${Math.abs(data.payout)} coins`;
+                resultDisplay.className = 'result-display lose';
+            }
+
+            spinBtn.disabled = false;
+        }, 900);
+    })
+    .catch(() => {
+        setSpinning(false);
+        spinBtn.disabled = false;
+        resultDisplay.textContent = 'Something went wrong';
+    });
+}
+
+spinBtn.addEventListener('click', spin);
+betAmount.addEventListener('keydown', e => { if (e.key === 'Enter') spin(); });
+</script>
+{% endblock %}

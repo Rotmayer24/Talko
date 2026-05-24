@@ -8,7 +8,7 @@
     
     <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%;">
         
-        <div style="width: 120px; height: 120px; border-radius: 50%; overflow: hidden; border: 3px solid var(--tn-blue); display: flex; align-items: center; justify-content: center; background: var(--tn-surface);">
+        <div style="width: 120px; height: 120px; border-radius: 50%; overflow: hidden; border: 3px solid var(--tn-blue); display: flex; align-items: center; justify-content: center; background: var(--tn-surface);" id="profileAvatar">
             {% if profile.avatar %}
                 <img src="{{ profile.avatar.url }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
             {% else %}

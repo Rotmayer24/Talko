@@ -1,0 +1,198 @@
+{% extends "index.html" %}
+{% block title %}Casino — Talko{% endblock %}
+{% block content %}
+<style>
+.casino-container {
+    max-width: 800px;
+    margin: 100px auto 40px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+}
+.casino-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.casino-header h1 {
+    font-size: 2rem;
+    background: linear-gradient(135deg, var(--tn-orange), var(--tn-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.balance-box {
+    background: var(--tn-overlay);
+    border: 2px solid var(--tn-orange);
+    border-radius: 12px;
+    padding: 10px 24px;
+    text-align: center;
+}
+.balance-box .label {
+    font-size: 0.75rem;
+    color: var(--tn-text-dim);
+    letter-spacing: 0.1em;
+}
+.balance-box .amount {
+    font-size: 1.5rem;
+    color: var(--tn-orange);
+    font-weight: 700;
+}
+.games-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+.game-card {
+    background: var(--tn-overlay);
+    border: 1px solid var(--tn-muted);
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+.game-card:hover {
+    transform: translateY(-5px);
+    text-decoration: none;
+}
+.game-card.slots:hover {
+    border-color: #ffd700;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.25);
+}
+.game-card.blackjack:hover {
+    border-color: var(--tn-purple);
+    box-shadow: 0 0 20px rgba(187, 154, 247, 0.25);
+}
+.game-card.shop-card:hover {
+    border-color: var(--tn-green);
+    box-shadow: 0 0 20px rgba(158, 206, 106, 0.25);
+}
+.game-icon {
+    font-size: 3rem;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--tn-surface);
+}
+.game-card.slots .game-icon { background: rgba(255, 215, 0, 0.15); }
+.game-card.blackjack .game-icon { background: rgba(187, 154, 247, 0.15); }
+.game-card.shop-card .game-icon { background: rgba(158, 206, 106, 0.15); }
+.game-card h2 {
+    font-size: 1.3rem;
+    color: var(--tn-text);
+}
+.game-card p {
+    font-size: 0.85rem;
+    color: var(--tn-text-dim);
+    margin: 0;
+}
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+.stat-box {
+    background: var(--tn-overlay);
+    border: 1px solid var(--tn-muted);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+}
+.stat-box .stat-label {
+    font-size: 0.7rem;
+    color: var(--tn-text-dim);
+    letter-spacing: 0.08em;
+}
+.stat-box .stat-value {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-top: 4px;
+}
+.stat-box.won .stat-value { color: var(--tn-green); }
+.stat-box.lost .stat-value { color: var(--tn-orange); }
+.stat-box.bets .stat-value { color: var(--tn-blue); }
+@media (max-width: 600px) {
+    .games-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+<div class="casino-container">
+    <div class="casino-header">
+        <h1>🎰 Casino</h1>
+        <div class="balance-box">
+            <div class="label">BALANCE</div>
+            <div class="amount">{{ profile.balance }} 🪙</div>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-box bets">
+            <div class="stat-label">BETS</div>
+            <div class="stat-value">{{ profile.total_bets }}</div>
+        </div>
+        <div class="stat-box won">
+            <div class="stat-label">WON</div>
+            <div class="stat-value">{{ profile.total_won }}</div>
+        </div>
+        <div class="stat-box lost">
+            <div class="stat-label">LOST</div>
+            <div class="stat-value">{{ profile.total_lost }}</div>
+        </div>
+    </div>
+
+    <div class="games-grid">
+        <a href="{% url 'casino:slots' %}" class="game-card slots">
+            <div class="game-icon">🎰</div>
+            <h2>Slots</h2>
+            <p>Match 3 symbols — cherries, sevens, diamonds &amp; more!</p>
+        </a>
+        <a href="{% url 'casino:blackjack' %}" class="game-card blackjack">
+            <div class="game-icon">🃏</div>
+            <h2>Blackjack</h2>
+            <p>Beat the dealer — get 21 without going bust!</p>
+        </a>
+    </div>
+
+    <a href="{% url 'casino:shop' %}" class="game-card shop-card" style="margin-bottom: 30px;">
+        <div class="game-icon">🛒</div>
+        <h2>Shop</h2>
+        <p>Buy coins</p>
+    </a>
+
+    {% if recent_bets %}
+    <div style="background: var(--tn-overlay); border: 1px solid var(--tn-muted); border-radius: 12px; padding: 20px;">
+        <h3 style="color: var(--tn-text); margin-bottom: 15px; font-size: 1rem;">Recent Bets</h3>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            {% for bet in recent_bets %}
+            <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: var(--tn-surface); border-radius: 6px; font-size: 0.85rem;">
+                <span style="color: var(--tn-text-dim);">{{ bet.game|title }}</span>
+                <span style="color: var(--tn-text);">{{ bet.bet_amount }} 🪙</span>
+                {% if bet.payout > 0 %}
+                    <span style="color: var(--tn-green);">+{{ bet.payout }}</span>
+                {% elif bet.payout < 0 %}
+                    <span style="color: var(--tn-orange);">{{ bet.payout }}</span>
+                {% else %}
+                    <span style="color: var(--tn-text-dim);">0</span>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
