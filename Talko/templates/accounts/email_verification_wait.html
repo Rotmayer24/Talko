@@ -1,0 +1,17 @@
+{% extends "index.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Please Wait" %}{% endblock %}
+
+{% block content %}
+<div class="box" style="max-width: 480px; text-align: center;">
+    <h1 style="color: var(--tn-yellow, #e0af68);">{% trans "Hold On" %}</h1>
+    <p style="color: var(--tn-text-dim);">
+        {% trans "A verification email was sent recently. Please wait a few minutes before requesting another one." %}
+    </p>
+    <div style="margin-top: 20px;">
+        <a href="{% url 'accounts:profile' %}" style="color: var(--tn-text-dim); text-decoration: none;">{% trans "Back to Profile" %}</a>
+    </div>
+</div>
+{% endblock %}

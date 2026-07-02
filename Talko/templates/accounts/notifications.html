@@ -1,0 +1,53 @@
+{% extends "index.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="box" style="max-width: 700px;">
+    <h2 style="margin-bottom: 20px; color: var(--tn-blue);">
+        {% trans "Notifications" %}
+        {% if unread_count > 0 %}
+        <span style="background: var(--tn-orange); color: white; border-radius: 50%; padding: 4px 10px; font-size: 0.8rem; margin-left: 10px;">{{ unread_count }}</span>
+        {% endif %}
+    </h2>
+    
+    {% if unread_count > 0 %}
+    <div style="margin-bottom: 20px;">
+        <a href="{% url 'accounts:mark_all_notifications_read' %}" 
+           style="padding: 8px 16px; background: var(--tn-blue); color: white; border-radius: 6px; text-decoration: none; font-size: 0.85rem;">
+            {% trans "Mark all as read" %}
+        </a>
+    </div>
+    {% endif %}
+    
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+        {% for notification in notifications %}
+        <a href="{% url 'accounts:mark_notification_read' notification.id %}" 
+           style="display: flex; gap: 12px; padding: 15px; background: {% if not notification.is_read %}rgba(122, 162, 247, 0.1){% else %}var(--tn-surface){% endif %}; border-radius: 8px; border: 1px solid var(--tn-muted); text-decoration: none; transition: all 0.2s;">
+            <div style="font-size: 2rem;">
+                {% if notification.notification_type == 'friend_request' %}{% trans "Request" %}
+                {% elif notification.notification_type == 'friend_accepted' %}{% trans "Accepted" %}
+                {% elif notification.notification_type == 'message' %}{% trans "Message" %}
+                {% elif notification.notification_type == 'group_invite' %}{% trans "Group" %}
+                {% endif %}
+            </div>
+            <div style="flex: 1;">
+                <div style="color: var(--tn-text); font-weight: 600; margin-bottom: 5px;">
+                    {{ notification.title }}
+                    {% if not notification.is_read %}
+                    <span style="width: 8px; height: 8px; background: var(--tn-blue); border-radius: 50%; display: inline-block; margin-left: 8px;"></span>
+                    {% endif %}
+                </div>
+                <div style="color: var(--tn-text-dim); font-size: 0.85rem; margin-bottom: 5px;">{{ notification.message }}</div>
+                <div style="color: var(--tn-subtle); font-size: 0.75rem;">{{ notification.created_at|timesince }} {% trans "ago" %}</div>
+            </div>
+        </a>
+        {% empty %}
+        <p style="color: var(--tn-text-dim); text-align: center; padding: 40px;">
+            {% trans "No notifications yet" %}
+        </p>
+        {% endfor %}
+    </div>
+    
+    <a href="/" style="display: block; text-align: center; margin-top: 30px; color: var(--tn-text-dim); text-decoration: none;">{% trans "Back to Home" %}</a>
+</div>
+{% endblock %}

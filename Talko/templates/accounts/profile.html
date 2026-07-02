@@ -1,0 +1,91 @@
+{% extends "index.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Profile" %}{% endblock %}
+
+{% block content %}
+<div class="box" style="max-width: 600px;">
+    <h2 style="margin-bottom: 30px; color: var(--tn-blue);">{% trans "Profile" %}</h2>
+    
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%;">
+        
+        <div style="width: 120px; height: 120px; border-radius: 50%; overflow: hidden; border: 3px solid var(--tn-blue); display: flex; align-items: center; justify-content: center; background: var(--tn-surface);" id="profileAvatar">
+            {% if profile.avatar %}
+                <img src="{{ profile.avatar.url }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+            {% else %}
+                <span style="font-size: 48px; color: var(--tn-blue); font-weight: bold;">{{ user.username|first|upper }}</span>
+            {% endif %}
+        </div>
+        
+        <div style="text-align: center; width: 100%;">
+            <h3 style="color: var(--tn-text); margin-bottom: 5px;">{{ user.username }}</h3>
+            <p style="color: var(--tn-text-dim); font-size: 0.85rem;">{{ user.email }}</p>
+            {% if profile.email_verified %}
+                <p style="color: var(--tn-green, #9ece6a); font-size: 0.8rem; margin-top: 4px;">✓ {% trans "Email verified" %}</p>
+            {% else %}
+                <p style="color: var(--tn-yellow, #e0af68); font-size: 0.8rem; margin-top: 4px;">
+                    {% trans "Email not verified" %} —
+                    <a href="{% url 'accounts:resend_verification' %}" style="color: var(--tn-blue);">{% trans "verify now" %}</a>
+                </p>
+            {% endif %}
+        </div>
+        
+        {% if profile.bio %}
+        <div style="width: 100%; padding: 15px; background: var(--tn-surface); border-radius: 8px; border: 1px solid var(--tn-muted);">
+            <p style="color: var(--tn-text); font-size: 0.9rem; line-height: 1.5;">{{ profile.bio }}</p>
+        </div>
+        {% endif %}
+        
+        <div class="profile-actions">
+            <a href="{% url 'accounts:edit_profile' %}" class="btn btn-primary">{% trans "Edit Profile" %}</a>
+            <a href="{% url 'accounts:change_password' %}" class="btn btn-secondary">{% trans "Change Password" %}</a>
+
+            <div class="dropdown-menu theme-dropdown">
+                <button type="button" class="dropdown-toggle" onclick="toggleDropdown(this)">{% trans "Theme" %}</button>
+                <div class="dropdown-content" id="themeMenu"></div>
+            </div>
+
+            <form method="post" action="{% url 'accounts:logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-logout">{% trans "Logout" %}</button>
+            </form>
+        </div>
+        
+        <a href="/" style="color: var(--tn-text-dim); font-size: 0.85rem; margin-top: 10px; text-decoration: none;">{% trans "Back to Home" %}</a>
+    </div>
+</div>
+
+<script>
+    (function () {
+        var menu = document.getElementById("themeMenu");
+        var catalog = window.TALKO_THEME_CATALOG || [];
+        if (!menu) { return; }
+        var current = (window.getTheme && window.getTheme()) || "tokyonight";
+        catalog.forEach(function (t) {
+            var item = document.createElement("button");
+            item.type = "button";
+            item.className = "dropdown-item theme-menu-item" + (t.id === current ? " active" : "");
+            item.setAttribute("data-theme-option", t.id);
+            item.onclick = function () { window.setTheme(t.id); };
+
+            var dot = document.createElement("span");
+            dot.className = "theme-dot";
+            dot.style.background = "linear-gradient(135deg, " + t.colors[1] + " 0%, " + t.colors[2] + " 100%)";
+
+            var label = document.createElement("span");
+            label.textContent = t.name;
+
+            var check = document.createElement("span");
+            check.className = "theme-menu-check";
+            check.textContent = "✓";
+
+            item.appendChild(dot);
+            item.appendChild(label);
+            item.appendChild(check);
+            menu.appendChild(item);
+        });
+    })();
+</script>
+
+{% endblock %}

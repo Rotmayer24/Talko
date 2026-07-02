@@ -1,0 +1,22 @@
+{% extends "index.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Verification Sent" %}{% endblock %}
+
+{% block content %}
+<div class="box" style="max-width: 480px; text-align: center;">
+    <h1 style="color: var(--tn-blue);">{% trans "Check Your Inbox" %}</h1>
+    <p style="color: var(--tn-text-dim);">
+        {% blocktrans %}We've sent a verification link to <strong>{{ email }}</strong>.
+        Open it to confirm your email address. The link is valid for 24 hours.{% endblocktrans %}
+    </p>
+    <div style="margin-top: 20px;">
+        {% if user.is_authenticated %}
+            <a href="{% url 'accounts:profile' %}" style="color: var(--tn-text-dim); text-decoration: none;">{% trans "Back to Profile" %}</a>
+        {% else %}
+            <a href="{% url 'accounts:login' %}" style="color: var(--tn-text-dim); text-decoration: none;">{% trans "Go to Sign In" %}</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

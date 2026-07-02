@@ -1,0 +1,35 @@
+/* Dracula. */
+:root {
+    --tn-bg: #282a36;
+    --tn-bg-alt: #21222c;
+    --tn-surface: #2f3142;
+    --tn-overlay: #383a4c;
+    --tn-muted: #44475a;
+    --tn-subtle: #6272a4;
+    --tn-text: #f8f8f2;
+    --tn-text-dim: #a4a7c0;
+
+    --tn-blue: #8be9fd;
+    --tn-cyan: #62d6e8;
+    --tn-purple: #bd93f9;
+    --tn-green: #50fa7b;
+    --tn-orange: #ffb86c;
+    --tn-red: #ff5555;
+    --tn-yellow: #f1fa8c;
+
+    --tn-blue-rgb: 139, 233, 253;
+    --tn-purple-rgb: 189, 147, 249;
+    --tn-cyan-rgb: 98, 214, 232;
+
+    --tn-header-bg: rgba(33, 34, 44, 0.82);
+    --tn-dot: rgba(189, 147, 249, 0.07);
+    --tn-glow-1: rgba(255, 121, 198, 0.07);
+    --tn-glow-2: rgba(139, 233, 253, 0.06);
+
+    --glow-blue:
+        0 0 12px rgba(139, 233, 253, 0.45), 0 0 32px rgba(139, 233, 253, 0.15);
+    --glow-purple:
+        0 0 12px rgba(189, 147, 249, 0.45), 0 0 32px rgba(189, 147, 249, 0.15);
+    --glow-cyan:
+        0 0 12px rgba(98, 214, 232, 0.45), 0 0 32px rgba(98, 214, 232, 0.15);
+}

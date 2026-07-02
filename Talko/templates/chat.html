@@ -1,0 +1,39 @@
+{% extends "index.html" %}
+{% block content %}
+
+<div class="layout">
+    <div class="chat">
+        <div class="chat-header">
+            <h3>{{ chat.id }}</h3>
+        </div>
+
+        <div class="chat-list">
+            {% for m in messages %}
+                <div class="chat-preview">
+                    <b>{{ m.sender.username }}:</b> {{ m.content }}
+                </div>
+            {% empty %}
+                <p>No messages yet</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="chat-window">
+            <div class="chat-messages">
+                {% for m in messages %}
+                    <div class="message {% if m.sender == user %}own{% endif %}">
+                        {{ m.content }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <form method="post" action="{% url 'messages:chat' chat.id %}">
+                {% csrf_token %}
+                <input name="text" class="message-input" placeholder="Type message...">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

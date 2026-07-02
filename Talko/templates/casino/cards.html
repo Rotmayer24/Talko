@@ -1,0 +1,276 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% block title %}Card Collection — Talko{% endblock %}
+{% block content %}
+<style>
+.cards-container {
+    max-width: 900px;
+    margin: 100px auto 40px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+}
+.cards-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.cards-header h1 {
+    font-size: 2rem;
+    background: linear-gradient(135deg, var(--tn-purple), var(--tn-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.cards-stats {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.cards-stat {
+    background: var(--tn-overlay);
+    border: 1px solid var(--tn-muted);
+    border-radius: 10px;
+    padding: 8px 16px;
+    text-align: center;
+}
+.cards-stat .label {
+    font-size: 0.65rem;
+    color: var(--tn-text-dim);
+    letter-spacing: 0.08em;
+}
+.cards-stat .value {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--tn-text);
+}
+.cards-stat.value-box .value { color: var(--tn-orange); }
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+}
+.card-tile {
+    position: relative;
+    background: var(--tn-overlay);
+    border: 2px solid var(--tn-muted);
+    border-radius: 14px;
+    padding: 18px 14px 14px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-tile.owned {
+    border-color: var(--rarity);
+    box-shadow: 0 0 14px -2px var(--rarity);
+}
+.card-tile.owned:hover {
+    transform: translateY(-4px);
+}
+.card-tile.locked {
+    opacity: 0.45;
+    filter: grayscale(0.7);
+}
+.card-emoji {
+    font-size: 3rem;
+    line-height: 1;
+}
+.card-name {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--tn-text);
+}
+.card-rarity {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--rarity);
+    border: 1px solid var(--rarity);
+    border-radius: 99px;
+    padding: 2px 10px;
+}
+.card-value {
+    font-size: 0.75rem;
+    color: var(--tn-text-dim);
+}
+.card-qty {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--rarity);
+    color: #111;
+    font-size: 0.72rem;
+    font-weight: 700;
+    border-radius: 99px;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.card-actions {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+    margin-top: 4px;
+}
+.sell-btn {
+    flex: 1;
+    padding: 7px 4px;
+    background: var(--tn-surface);
+    border: 1px solid var(--tn-muted);
+    border-radius: 8px;
+    color: var(--tn-text);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.sell-btn:hover:not(:disabled) {
+    border-color: var(--tn-green);
+    color: var(--tn-green);
+    background: rgba(158, 206, 106, 0.12);
+}
+.sell-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.card-locked-label {
+    font-size: 0.7rem;
+    color: var(--tn-text-dim);
+}
+.back-link {
+    display: inline-block;
+    margin-bottom: 16px;
+    color: var(--tn-text-dim);
+    font-size: 0.85rem;
+}
+#cardToast {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--tn-overlay);
+    border: 1px solid var(--tn-green);
+    color: var(--tn-text);
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+}
+#cardToast.show { opacity: 1; }
+@media (max-width: 600px) {
+    .cards-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+}
+</style>
+
+<div class="cards-container">
+    <a href="{% url 'casino:home' %}" class="back-link">← {% trans "Back to Casino" %}</a>
+
+    <div class="cards-header">
+        <h1>🎴 {% trans "Collection" %}</h1>
+        <div class="cards-stats">
+            <div class="cards-stat">
+                <div class="label">{% trans "COLLECTED" %}</div>
+                <div class="value">{{ owned_count }}/{{ total_count }}</div>
+            </div>
+            <div class="cards-stat value-box">
+                <div class="label">{% trans "VALUE" %}</div>
+                <div class="value" id="collectionValue">{{ collection_value }} 🪙</div>
+            </div>
+            <div class="cards-stat">
+                <div class="label">{% trans "BALANCE" %}</div>
+                <div class="value" id="balance">{{ profile.balance }} 🪙</div>
+            </div>
+        </div>
+    </div>
+
+    <p style="color: var(--tn-text-dim); font-size: 0.85rem; margin-bottom: 20px;">
+        {% trans "Win cards by playing Slots and Blackjack. Sell duplicates back for coins." %}
+    </p>
+
+    <div class="cards-grid">
+        {% for c in catalog %}
+        <div class="card-tile {% if c.quantity %}owned{% else %}locked{% endif %}"
+             id="card-{{ c.id }}" style="--rarity: {{ c.color }};">
+            {% if c.quantity %}<span class="card-qty" data-qty>×{{ c.quantity }}</span>{% endif %}
+            <div class="card-emoji">{% if c.quantity %}{{ c.emoji }}{% else %}❓{% endif %}</div>
+            <div class="card-name">{% if c.quantity %}{{ c.name }}{% else %}???{% endif %}</div>
+            <div class="card-rarity">{{ c.label }}</div>
+            <div class="card-value">{{ c.value }} 🪙 each</div>
+            {% if c.quantity %}
+            <div class="card-actions">
+                <button class="sell-btn" data-card="{{ c.id }}" data-qty="1">{% trans "Sell 1" %}</button>
+                <button class="sell-btn" data-card="{{ c.id }}" data-qty="all">{% trans "Sell all" %}</button>
+            </div>
+            {% else %}
+            <div class="card-locked-label">{% trans "Not yet found" %}</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div id="cardToast"></div>
+
+<script>
+const CSRF = "{{ csrf_token }}";
+const balanceEl = document.getElementById('balance');
+const collectionValueEl = document.getElementById('collectionValue');
+const toast = document.getElementById('cardToast');
+let toastTimer = null;
+
+function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+async function sell(cardId, qtyMode) {
+    const tile = document.getElementById('card-' + cardId);
+    const qtyEl = tile.querySelector('[data-qty]');
+    const owned = parseInt((qtyEl ? qtyEl.textContent : '×0').replace('×', ''), 10) || 0;
+    const quantity = qtyMode === 'all' ? owned : 1;
+    if (quantity < 1) return;
+
+    const res = await fetch("{% url 'casino:sell_card' %}", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-CSRFToken": CSRF },
+        body: JSON.stringify({ card_id: cardId, quantity: quantity }),
+    });
+    const data = await res.json();
+    if (data.error) { showToast(data.error); return; }
+
+    balanceEl.textContent = data.balance + ' 🪙';
+    showToast(`Sold ${quantity} for +${data.earned} 🪙`);
+
+    if (data.remaining > 0) {
+        qtyEl.textContent = '×' + data.remaining;
+    } else {
+        // Card sold out → render it as locked again.
+        tile.classList.remove('owned');
+        tile.classList.add('locked');
+        if (qtyEl) qtyEl.remove();
+        tile.querySelector('.card-emoji').textContent = '❓';
+        tile.querySelector('.card-name').textContent = '???';
+        const actions = tile.querySelector('.card-actions');
+        if (actions) actions.outerHTML = '<div class="card-locked-label">Not yet found</div>';
+    }
+}
+
+document.querySelectorAll('.sell-btn').forEach(btn => {
+    btn.addEventListener('click', () => sell(parseInt(btn.dataset.card, 10), btn.dataset.qty));
+});
+</script>
+{% endblock %}

@@ -1,0 +1,486 @@
+# Talko German Translation.
+msgid ""
+msgstr ""
+"Project-Id-Version: Talko\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-28 15:13+0200\n"
+"PO-Revision-Date: 2026-06-28 15:13+0200\n"
+"Last-Translator: \n"
+"Language-Team: German\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Change Password"
+msgstr "Passwort ändern"
+
+msgid "Old Password"
+msgstr "Altes Passwort"
+
+msgid "New Password"
+msgstr "Neues Passwort"
+
+msgid "Confirm New Password"
+msgstr "Neues Passwort bestätigen"
+
+msgid "Cancel"
+msgstr "Abbrechen"
+
+msgid "Edit Profile"
+msgstr "Profil bearbeiten"
+
+msgid "Username"
+msgstr "Benutzername"
+
+msgid "Email"
+msgstr "E-Mail"
+
+msgid "Avatar"
+msgstr "Avatar"
+
+msgid "Bio"
+msgstr "Biografie"
+
+msgid "Save Changes"
+msgstr "Änderungen speichern"
+
+msgid "Verification Sent"
+msgstr "Bestätigung gesendet"
+
+msgid "Check Your Inbox"
+msgstr "Überprüfen Sie Ihren Posteingang"
+
+#, python-format
+msgid ""
+"We've sent a verification link to <strong>%(email)s</strong>.\n"
+"        Open it to confirm your email address. The link is valid for 24 "
+"hours."
+msgstr ""
+"Wir haben einen Bestätigungslink an <strong>%(email)s</strong> gesendet.\n"
+"        Öffnen Sie ihn, um Ihre E-Mail-Adresse zu bestätigen. Der Link ist "
+"24 Stunden gültig."
+
+msgid "Back to Profile"
+msgstr "Zurück zum Profil"
+
+msgid "Go to Sign In"
+msgstr "Zum Anmelden"
+
+msgid "Please Wait"
+msgstr "Bitte warten"
+
+msgid "Hold On"
+msgstr "Einen Moment"
+
+msgid ""
+"A verification email was sent recently. Please wait a few minutes before "
+"requesting another one."
+msgstr ""
+"Eine Bestätigungs-E-Mail wurde kürzlich gesendet. Bitte warten Sie ein "
+"paar Minuten, bevor Sie eine weitere anfordern."
+
+msgid "Email Verification"
+msgstr "E-Mail-Bestätigung"
+
+msgid "Email Verified"
+msgstr "E-Mail bestätigt"
+
+msgid "Your email address has been confirmed. Thank you!"
+msgstr "Ihre E-Mail-Adresse wurde bestätigt. Vielen Dank!"
+
+msgid "Verification Failed"
+msgstr "Bestätigung fehlgeschlagen"
+
+msgid "This verification link is invalid or has expired."
+msgstr "Dieser Bestätigungslink ist ungültig oder abgelaufen."
+
+msgid "Send a new link"
+msgstr "Neuen Link senden"
+
+msgid "Signed Out"
+msgstr "Abgemeldet"
+
+msgid "You have been signed out."
+msgstr "Sie wurden abgemeldet."
+
+msgid "Sign In Again"
+msgstr "Erneut anmelden"
+
+msgid "Sign In"
+msgstr "Anmelden"
+
+msgid "Welcome Back"
+msgstr "Willkommen zurück"
+
+msgid "Sign in to continue"
+msgstr "Melden Sie sich an, um fortzufahren"
+
+msgid "Don't have an account?"
+msgstr "Haben Sie noch kein Konto?"
+
+msgid "Create One"
+msgstr "Erstellen"
+
+msgid "Notifications"
+msgstr "Benachrichtigungen"
+
+msgid "Mark all as read"
+msgstr "Alle als gelesen markieren"
+
+msgid "Request"
+msgstr "Anfrage"
+
+msgid "Accepted"
+msgstr "Akzeptiert"
+
+msgid "Message"
+msgstr "Nachricht"
+
+msgid "Group"
+msgstr "Gruppe"
+
+msgid "ago"
+msgstr "vor"
+
+msgid "No notifications yet"
+msgstr "Noch keine Benachrichtigungen"
+
+msgid "Back to Home"
+msgstr "Zurück zur Startseite"
+
+msgid "Profile"
+msgstr "Profil"
+
+msgid "Email verified"
+msgstr "E-Mail bestätigt"
+
+msgid "Email not verified"
+msgstr "E-Mail nicht bestätigt"
+
+msgid "verify now"
+msgstr "Jetzt bestätigen"
+
+msgid "Theme"
+msgstr "Design"
+
+msgid "Logout"
+msgstr "Abmelden"
+
+msgid "Create Account"
+msgstr "Konto erstellen"
+
+msgid "Already have an account?"
+msgstr "Haben Sie bereits ein Konto?"
+
+msgid "Friend Requests"
+msgstr "Freundschaftsanfragen"
+
+msgid "Accept"
+msgstr "Akzeptieren"
+
+msgid "Reject"
+msgstr "Ablehnen"
+
+msgid "No pending requests"
+msgstr "Keine ausstehenden Anfragen"
+
+msgid "Search Users & Groups"
+msgstr "Benutzer & Gruppen suchen"
+
+msgid "Search by username or group name..."
+msgstr "Nach Benutzername oder Gruppennamen suchen..."
+
+msgid "Search"
+msgstr "Suchen"
+
+msgid "Users"
+msgstr "Benutzer"
+
+msgid "Friends"
+msgstr "Freunde"
+
+msgid "Pending"
+msgstr "Ausstehend"
+
+msgid "Add Friend"
+msgstr "Freund hinzufügen"
+
+msgid "Groups"
+msgstr "Gruppen"
+
+#, python-format
+msgid "%(data.group.users.count)s members"
+msgstr "%(data.group.users.count)s Mitglieder"
+
+msgid "Member"
+msgstr "Mitglied"
+
+msgid "Join Group"
+msgstr "Gruppe beitreten"
+
+#, python-format
+msgid "No results found for \"%(query)s\""
+msgstr "Keine Ergebnisse für \"%(query)s\" gefunden"
+
+msgid "Enter a username or group name to search"
+msgstr "Geben Sie einen Benutzernamen oder Gruppennamen ein"
+
+msgid "Find Users"
+msgstr "Benutzer finden"
+
+msgid "Search by username..."
+msgstr "Nach Benutzername suchen..."
+
+msgid "Friend"
+msgstr "Freund"
+
+msgid "No users found"
+msgstr "Keine Benutzer gefunden"
+
+msgid "Blackjack"
+msgstr "Blackjack"
+
+msgid "BALANCE"
+msgstr "GUTHABEN"
+
+msgid "DEALER"
+msgstr "GEWER"
+
+msgid "YOUR HAND"
+msgstr "IHRE HAND"
+
+msgid "DEAL"
+msgstr "AUSTEILEN"
+
+msgid "HIT"
+msgstr "KARTE"
+
+msgid "STAND"
+msgstr "HALTEN"
+
+msgid "Back to Casino"
+msgstr "Zurück zum Casino"
+
+msgid "Collection"
+msgstr "Sammlung"
+
+msgid "COLLECTED"
+msgstr "GESAMMELT"
+
+msgid "VALUE"
+msgstr "WERT"
+
+msgid ""
+"Win cards by playing Slots and Blackjack. Sell duplicates back for coins."
+msgstr ""
+"Gewinnen Sie Karten beim Spielen von Slots und Blackjack. Verkaufen Sie "
+"Duplikate für Münzen."
+
+msgid "Sell 1"
+msgstr "1 verkaufen"
+
+msgid "Sell all"
+msgstr "Alle verkaufen"
+
+msgid "Not yet found"
+msgstr "Noch nicht gefunden"
+
+msgid "Casino"
+msgstr "Casino"
+
+msgid "BETS"
+msgstr "EINSÄTZE"
+
+msgid "WON"
+msgstr "GEWONNEN"
+
+msgid "LOST"
+msgstr "VERLOREN"
+
+msgid "Slots"
+msgstr "Slots"
+
+msgid "Match 3 symbols — cherries, sevens, diamonds & more!"
+msgstr "3 Symbole abgleichen — Kirschen, Siebenen, Diamanten & mehr!"
+
+msgid "Beat the dealer — get 21 without going bust!"
+msgstr "Schlagen Sie den Croupier — erreichen Sie 21 ohne überzuziehen!"
+
+msgid "Cards"
+msgstr "Karten"
+
+msgid "Win collectible cards by playing — sell duplicates for coins!"
+msgstr "Gewinnen Sie Sammlerkarten beim Spielen — verkaufen Sie Duplikate für Münzen!"
+
+msgid "Shop"
+msgstr "Shop"
+
+msgid "Buy coins"
+msgstr "Münzen kaufen"
+
+msgid "Recent Bets"
+msgstr "Letzte Einsätze"
+
+msgid "Casino Shop"
+msgstr "Casino-Shop"
+
+msgid "Buy Coins"
+msgstr "Münzen kaufen"
+
+msgid "Buy"
+msgstr "Kaufen"
+
+msgid "Pull the lever and try your luck!"
+msgstr "Ziehen Sie den Hebel und versuchen Sie Ihr Glück!"
+
+msgid "SPIN"
+msgstr "DREHEN"
+
+msgid "PAYOUT TABLE"
+msgstr "AUSZAHLUNGSTABELLE"
+
+msgid "Two matching"
+msgstr "Zwei gleiche"
+
+msgid "Chats"
+msgstr "Chats"
+
+msgid "Create Group"
+msgstr "Gruppe erstellen"
+
+msgid "Search..."
+msgstr "Suchen..."
+
+msgid "Secret"
+msgstr "Geheim"
+
+#, python-format
+msgid "%(chat.users.count)s members"
+msgstr "%(chat.users.count)s Mitglieder"
+
+msgid "click to open chat"
+msgstr "Klicken Sie, um den Chat zu öffnen"
+
+msgid "No chats yet"
+msgstr "Noch keine Chats"
+
+msgid "No messages yet"
+msgstr "Noch keine Nachrichten"
+
+msgid "Select a chat to start messaging"
+msgstr "Wählen Sie einen Chat, um zu beginnen"
+
+msgid "Upload Image"
+msgstr "Bild hochladen"
+
+msgid "Upload File"
+msgstr "Datei hochladen"
+
+msgid "Type a message..."
+msgstr "Nachricht eingeben..."
+
+msgid "Group Settings"
+msgstr "Gruppeneinstellungen"
+
+msgid "Settings"
+msgstr "Einstellungen"
+
+msgid "Requests"
+msgstr "Anfragen"
+
+msgid "Home"
+msgstr "Startseite"
+
+msgid "Sign Up"
+msgstr "Registrieren"
+
+msgid "Group Name"
+msgstr "Gruppenname"
+
+msgid "Group Avatar (optional)"
+msgstr "Gruppenavatar (optional)"
+
+msgid "Add Members"
+msgstr "Mitglieder hinzufügen"
+
+msgid "No friends to add"
+msgstr "Keine Freunde zum Hinzufügen"
+
+#, python-format
+msgid "Group Settings: %(group.group_name)s"
+msgstr "Gruppeneinstellungen: %(group.group_name)s"
+
+msgid "Group Avatar"
+msgstr "Gruppenavatar"
+
+#, python-format
+msgid "Members (%(members.count)s)"
+msgstr "Mitglieder (%(members.count)s)"
+
+msgid "Creator"
+msgstr "Ersteller"
+
+msgid "Admin"
+msgstr "Admin"
+
+msgid "Demote"
+msgstr "Degradieren"
+
+msgid "Promote"
+msgstr "Befördern"
+
+msgid "Remove"
+msgstr "Entfernen"
+
+msgid "Add"
+msgstr "Hinzufügen"
+
+msgid "Back to Chat"
+msgstr "Zurück zum Chat"
+
+msgid "Leave Group"
+msgstr "Gruppe verlassen"
+
+msgid "Welcome to Talko"
+msgstr "Willkommen bei Talko"
+
+msgid "Secure messaging platform with end-to-end encryption"
+msgstr "Sichere Messenger-Plattform mit Ende-zu-Ende-Verschlüsselung"
+
+msgid "Real-time Messaging"
+msgstr "Echtzeit-Nachrichten"
+
+msgid "Instant message delivery with WebSocket technology"
+msgstr "Sofortige Nachrichtenzustellung mit WebSocket-Technologie"
+
+msgid "End-to-End Encryption"
+msgstr "Ende-zu-Ende-Verschlüsselung"
+
+msgid "Your messages are secure with secret chats"
+msgstr "Ihre Nachrichten sind mit geheimen Chats sicher"
+
+msgid "Groups & Friends"
+msgstr "Gruppen & Freunde"
+
+msgid "Create group chats and connect with friends"
+msgstr "Erstellen Sie Gruppenchats und verbinden Sie sich mit Freunden"
+
+msgid "File Sharing"
+msgstr "Dateifreigabe"
+
+msgid "Share images and files securely"
+msgstr "Teilen Sie Bilder und Dateien sicher"
+
+msgid "Get Started"
+msgstr "Loslegen"
+
+msgid "Message deleted"
+msgstr "Nachricht gelöscht"
+
+msgid "Delete"
+msgstr "Löschen"
+
+msgid "Delete this message?"
+msgstr "Diese Nachricht löschen?"

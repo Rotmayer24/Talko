@@ -1,0 +1,85 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Active theme: one standalone stylesheet, applied before paint. -->
+    <link rel="stylesheet" id="theme-stylesheet" href="{% static 'css/themes/tokyonight.css' %}">
+    <script>
+        (function () {
+            var link = document.getElementById("theme-stylesheet");
+            var base = link.getAttribute("href").replace(/[^/]+$/, "");
+            var themes = ["tokyonight", "dark", "light", "dracula", "nord", "catppuccin", "rosepine", "gruvbox"];
+            var saved = localStorage.getItem("theme");
+            var theme = themes.indexOf(saved) !== -1 ? saved : "tokyonight";
+            link.setAttribute("href", base + theme + ".css");
+        })();
+    </script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Welcome to Talko</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul class="head-list">
+                <li><a href="/" class="head-item">{% trans "Home" %}</a></li>
+                {% get_current_language as CURRENT_LANGUAGE %}
+                {% get_language_info_list for LANGUAGES as languages %}
+                <li>
+                    <form method="post" action="{% url 'set_language' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <select id="language-select" name="language" onchange="this.form.submit()">
+                            {% for lang in languages %}
+                                <option value="{{ lang.code }}"{% if lang.code == CURRENT_LANGUAGE %} selected{% endif %}>
+                                    {{ lang.name_local }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </li>
+                <li><a href="{% url 'accounts:login' %}" class="sign-in">{% trans "Sign In" %}</a></li>
+                <li><a href="{% url 'accounts:register' %}" class="sign-up">{% trans "Sign Up" %}</a></li>
+            </ul>
+        </nav>
+    </header> 
+    <div class="welcome-container">
+        <div class="welcome-hero">
+            <h1 class="welcome-title">{% trans "Welcome to Talko" %}</h1>
+            <p class="welcome-subtitle">{% trans "Secure messaging platform with end-to-end encryption" %}</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">Chat</div>
+                <h3>{% trans "Real-time Messaging" %}</h3>
+                <p>{% trans "Instant message delivery with WebSocket technology" %}</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">Lock</div>
+                <h3>{% trans "End-to-End Encryption" %}</h3>
+                <p>{% trans "Your messages are secure with secret chats" %}</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">Group</div>
+                <h3>{% trans "Groups & Friends" %}</h3>
+                <p>{% trans "Create group chats and connect with friends" %}</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">File</div>
+                <h3>{% trans "File Sharing" %}</h3>
+                <p>{% trans "Share images and files securely" %}</p>
+            </div>
+        </div>
+        
+        <div class="welcome-actions">
+            <a href="{% url 'accounts:register' %}" class="btn-welcome btn-primary">{% trans "Get Started" %}</a>
+            <a href="{% url 'accounts:login' %}" class="btn-welcome btn-secondary">{% trans "Sign In" %}</a>
+        </div>
+    </div>
+</body>
+</html>

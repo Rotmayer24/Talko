@@ -1,0 +1,35 @@
+{% extends "index.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Create Account" %}{% endblock %}
+
+{% block content %}
+<div class="box">
+    <div>
+        <h1>{% trans "Create Account" %}</h1>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+
+        {% if form.errors %}
+            <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">{% trans "Create Account" %}</button>
+    </form>
+    <div>
+        {% trans "Already have an account?" %} <a href="{% url 'accounts:login' %}">{% trans "Sign In" %}</a>
+    </div>
+</div>
+{% endblock %}

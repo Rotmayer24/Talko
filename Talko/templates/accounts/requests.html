@@ -1,0 +1,36 @@
+{% extends "index.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="box" style="max-width: 600px;">
+    <h2 style="margin-bottom: 20px; color: var(--tn-blue);">{% trans "Friend Requests" %}</h2>
+    
+    <div style="width: 100%; display: flex; flex-direction: column; gap: 12px;">
+        {% for r in requests %}
+            <div style="display: flex; gap: 10px; align-items: center; justify-content: space-between; padding: 15px; background: var(--tn-surface); border-radius: 8px; border: 1px solid var(--tn-muted);">
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <div class="chat-avatar" style="width: 40px; height: 40px; font-size: 1rem;">
+                        {{ r.from_user.username|first|upper }}
+                    </div>
+                    <span style="color: var(--tn-text);">{{ r.from_user.username }}</span>
+                </div>
+                
+                <div style="display: flex; gap: 8px;">
+                    <a href="{% url 'accounts:accept_friend' r.id %}" 
+                       style="padding: 8px 16px; background: var(--tn-green); color: var(--tn-bg); border-radius: 6px; text-decoration: none; font-size: 0.85rem; font-weight: 600;">
+                        {% trans "Accept" %}
+                    </a>
+                    <a href="{% url 'accounts:reject_friend' r.id %}" 
+                       style="padding: 8px 16px; background: var(--tn-muted); color: var(--tn-text); border-radius: 6px; text-decoration: none; font-size: 0.85rem; font-weight: 600;">
+                        {% trans "Reject" %}
+                    </a>
+                </div>
+            </div>
+        {% empty %}
+            <p style="color: var(--tn-text-dim); text-align: center; padding: 20px;">{% trans "No pending requests" %}</p>
+        {% endfor %}
+    </div>
+    
+    <a href="/" style="display: block; text-align: center; margin-top: 20px; color: var(--tn-text-dim); text-decoration: none;">{% trans "Back to Home" %}</a>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "index.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Email Verification" %}{% endblock %}
+
+{% block content %}
+<div class="box" style="max-width: 480px; text-align: center;">
+    {% if success %}
+        <h1 style="color: var(--tn-green, #9ece6a);">{% trans "Email Verified" %}</h1>
+        <p style="color: var(--tn-text-dim);">{% trans "Your email address has been confirmed. Thank you!" %}</p>
+    {% else %}
+        <h1 style="color: var(--tn-red, #f7768e);">{% trans "Verification Failed" %}</h1>
+        <p style="color: var(--tn-text-dim);">{% trans "This verification link is invalid or has expired." %}</p>
+        <a href="{% url 'accounts:resend_verification' %}" class="btn btn-primary">{% trans "Send a new link" %}</a>
+    {% endif %}
+    <div style="margin-top: 20px;">
+        <a href="{% url 'accounts:profile' %}" style="color: var(--tn-text-dim); text-decoration: none;">{% trans "Back to Profile" %}</a>
+    </div>
+</div>
+{% endblock %}

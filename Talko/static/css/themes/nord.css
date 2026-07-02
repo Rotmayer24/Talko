@@ -1,0 +1,35 @@
+/* Nord. */
+:root {
+    --tn-bg: #2e3440;
+    --tn-bg-alt: #272b35;
+    --tn-surface: #3b4252;
+    --tn-overlay: #434c5e;
+    --tn-muted: #4c566a;
+    --tn-subtle: #616e88;
+    --tn-text: #eceff4;
+    --tn-text-dim: #9aa5b8;
+
+    --tn-blue: #88c0d0;
+    --tn-cyan: #8fbcbb;
+    --tn-purple: #b48ead;
+    --tn-green: #a3be8c;
+    --tn-orange: #d08770;
+    --tn-red: #bf616a;
+    --tn-yellow: #ebcb8b;
+
+    --tn-blue-rgb: 136, 192, 208;
+    --tn-purple-rgb: 180, 142, 173;
+    --tn-cyan-rgb: 143, 188, 187;
+
+    --tn-header-bg: rgba(39, 43, 53, 0.82);
+    --tn-dot: rgba(136, 192, 208, 0.06);
+    --tn-glow-1: rgba(180, 142, 173, 0.06);
+    --tn-glow-2: rgba(136, 192, 208, 0.06);
+
+    --glow-blue:
+        0 0 12px rgba(136, 192, 208, 0.45), 0 0 32px rgba(136, 192, 208, 0.15);
+    --glow-purple:
+        0 0 12px rgba(180, 142, 173, 0.45), 0 0 32px rgba(180, 142, 173, 0.15);
+    --glow-cyan:
+        0 0 12px rgba(143, 188, 187, 0.45), 0 0 32px rgba(143, 188, 187, 0.15);
+}

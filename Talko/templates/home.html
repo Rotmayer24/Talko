@@ -1,0 +1,336 @@
+{% extends "index.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}Home{% endblock %}
+
+{% block extra_style %}{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="layout">
+
+    <div class="chat">
+        <div class="chat-header">
+            <h3>{% trans "Chats" %}</h3>
+            <div style="display: flex; gap: 6px;">
+                <a href="{% url 'messages:create_group' %}" class="btn-new-group" title="{% trans "Create Group" %}">👥 {% trans "Group" %}</a>
+                <a href="{% url 'accounts:search' %}" class="btn-search-users" title="{% trans "Find Users" %}">👤 {% trans "Friend" %}</a>
+            </div>
+        </div>
+
+        <input type="text" class="chat-search" placeholder="{% trans "Search..." %}">
+
+        <div class="chat-list">
+            {% for chat in chats %}
+                {% if chat.is_group %}
+                    <a class="chat-item {% if active_chat.id == chat.id %}active{% endif %}"
+                       href="/?chat={{ chat.id }}"
+                       style="text-decoration:none; color:inherit;">
+
+                        <div class="chat-avatar">
+                            {% if chat.group_avatar %}
+                                <img src="{{ chat.group_avatar.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                            {% else %}
+                                {% trans "Group" %}
+                            {% endif %}
+                        </div>
+
+                        <div class="chat-info">
+                            <div class="chat-name">
+                                {{ chat.group_name }}
+                                {% if chat.is_secret %}{% trans "Secret" %}{% endif %}
+                            </div>
+                            <div class="chat-preview">
+                                {% blocktrans %}{{ chat.users.count }} members{% endblocktrans %}
+                            </div>
+                        </div>
+
+                    </a>
+                {% else %}
+                    {% for u in chat.users.all %}
+                        {% if u != request.user %}
+                            <a class="chat-item {% if active_chat.id == chat.id %}active{% endif %}"
+                               href="/?chat={{ chat.id }}"
+                               style="text-decoration:none; color:inherit;">
+
+                                <div class="chat-avatar">
+                                    {% if u.profile.avatar %}
+                                        <img src="{{ u.profile.avatar.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                    {% else %}
+                                        {{ u.username|first|upper }}
+                                    {% endif %}
+                                </div>
+
+                                <div class="chat-info">
+                                <div class="chat-name">
+                                    {{ u.username }}
+                                    {% if chat.is_secret %}{% trans "Secret" %}{% endif %}
+                                </div>
+                                    <div class="chat-preview">
+                                        {% trans "click to open chat" %}
+                                    </div>
+                                </div>
+
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% empty %}
+                <div style="padding:20px; color: var(--tn-text-dim);">
+                    {% trans "No chats yet" %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="chat-window">
+
+            <div class="chat-messages" id="chat-messages">
+
+                {% if active_chat %}
+
+                    {% for m in messages %}
+                        {% if m.deleted %}
+                            <div class="message {% if m.sender == user %}own{% endif %}" data-message-id="{{ m.id }}">
+                                <span style="color: var(--tn-text-dim); font-style: italic;">{% trans "Message deleted" %}</span>
+                            </div>
+                        {% elif m.message_type == 'image' %}
+                            <div class="message {% if m.sender == user %}own{% endif %}" data-message-id="{{ m.id }}">
+                                <img src="{{ m.image.url }}" style="max-width: 300px; border-radius: 8px; cursor: pointer;" onclick="window.open('{{ m.image.url }}', '_blank')">
+                                {% if m.sender == user %}
+                                <button class="btn-delete-msg" onclick="deleteMessage({{ m.id }})" title="{% trans "Delete" %}">✕</button>
+                                {% endif %}
+                            </div>
+                        {% elif m.message_type == 'video' %}
+                            <div class="message {% if m.sender == user %}own{% endif %}" data-message-id="{{ m.id }}">
+                                <video src="{{ m.video.url }}" controls style="max-width: 300px; border-radius: 8px;"></video>
+                                {% if m.sender == user %}
+                                <button class="btn-delete-msg" onclick="deleteMessage({{ m.id }})" title="{% trans "Delete" %}">✕</button>
+                                {% endif %}
+                            </div>
+                        {% elif m.message_type == 'file' %}
+                            <div class="message {% if m.sender == user %}own{% endif %}" data-message-id="{{ m.id }}">
+                                <a href="{{ m.file.url }}" download style="color: inherit; text-decoration: none;">
+                                    {% trans "File" %}: {{ m.file_name }} ({{ m.file_size|filesizeformat }})
+                                </a>
+                                {% if m.sender == user %}
+                                <button class="btn-delete-msg" onclick="deleteMessage({{ m.id }})" title="{% trans "Delete" %}">✕</button>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="message {% if m.sender == user %}own{% endif %}" data-message-id="{{ m.id }}">
+                                {% if active_chat.is_group and m.sender != user %}
+                                <div style="font-size: 0.75rem; opacity: 0.7; margin-bottom: 3px;">{{ m.sender.username }}</div>
+                                {% endif %}
+                                {{ m.content }}
+                                {% if m.sender == user %}
+                                <button class="btn-delete-msg" onclick="deleteMessage({{ m.id }})" title="{% trans "Delete" %}">✕</button>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% empty %}
+                        <p style="color: var(--tn-text-dim); text-align:center;">
+                            {% trans "No messages yet" %}
+                        </p>
+                    {% endfor %}
+
+                {% else %}
+                    <p style="color: var(--tn-text-dim); text-align:center;">
+                        {% trans "Select a chat to start messaging" %}
+                    </p>
+                {% endif %}
+
+            </div>
+
+            {% if active_chat %}
+            <div class="chat-input-area">
+                <input type="file" id="file-input" style="display: none;" accept="*/*">
+                <input type="file" id="image-input" style="display: none;" accept="image/*">
+                
+                <button onclick="document.getElementById('image-input').click()" class="btn-icon btn-icon-image" title="{% trans "Upload Image" %}">
+                    🖼️
+                </button>
+                
+                <button onclick="document.getElementById('file-input').click()" class="btn-icon btn-icon-file" title="{% trans "Upload File" %}">
+                    📎
+                </button>
+                
+                <input type="text" id="message-input" class="message-input" placeholder="{% trans "Type a message..." %}" />
+                
+                {% if active_chat.is_group and user in active_chat.admins.all %}
+                <a href="{% url 'messages:group_settings' active_chat.id %}" class="btn-icon btn-icon-settings" title="{% trans "Group Settings" %}">
+                    ⚙️
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+{% if active_chat %}
+<script>
+    const chatId = {{ active_chat.id }};
+    const username = "{{ user.username }}";
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = `${protocol}//${window.location.host}/ws/chat/${chatId}/`;
+    
+    let chatSocket = new WebSocket(wsUrl);
+    
+    chatSocket.onopen = function(e) {
+        console.log('WebSocket connected');
+    };
+    
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const messagesDiv = document.getElementById('chat-messages');
+
+        if (data.type === 'delete') {
+            const msgEl = messagesDiv.querySelector('[data-message-id="' + data.message_id + '"]');
+            if (msgEl) {
+                msgEl.innerHTML = '<span style="color: var(--tn-text-dim); font-style: italic;">{% trans "Message deleted" %}</span>';
+                const delBtn = msgEl.querySelector('.btn-delete-msg');
+                if (delBtn) delBtn.remove();
+            }
+            return;
+        }
+        
+        const messageDiv = document.createElement('div');
+        messageDiv.className = data.username === username ? 'message own' : 'message';
+        messageDiv.setAttribute('data-message-id', data.message_id);
+        
+        if (data.message_type === 'image') {
+            const img = document.createElement('img');
+            img.src = data.url;
+            img.style.maxWidth = '300px';
+            img.style.borderRadius = '8px';
+            img.style.cursor = 'pointer';
+            img.onclick = () => window.open(data.url, '_blank');
+            messageDiv.appendChild(img);
+        } else if (data.message_type === 'video') {
+            const video = document.createElement('video');
+            video.src = data.url;
+            video.controls = true;
+            video.style.maxWidth = '300px';
+            video.style.borderRadius = '8px';
+            messageDiv.appendChild(video);
+        } else if (data.message_type === 'file') {
+            const link = document.createElement('a');
+            link.href = data.url;
+            link.download = data.file_name;
+            link.style.color = 'inherit';
+            link.style.textDecoration = 'none';
+            link.textContent = '{% trans "File" %}: ' + data.file_name;
+            messageDiv.appendChild(link);
+        } else {
+            {% if active_chat.is_group %}
+            if (data.username !== username) {
+                const senderDiv = document.createElement('div');
+                senderDiv.style.fontSize = '0.75rem';
+                senderDiv.style.opacity = '0.7';
+                senderDiv.style.marginBottom = '3px';
+                senderDiv.textContent = data.username;
+                messageDiv.appendChild(senderDiv);
+            }
+            {% endif %}
+            const textNode = document.createTextNode(data.message);
+            messageDiv.appendChild(textNode);
+        }
+
+        if (data.username === username) {
+            const delBtn = document.createElement('button');
+            delBtn.className = 'btn-delete-msg';
+            delBtn.textContent = '✕';
+            delBtn.title = '{% trans "Delete" %}';
+            delBtn.onclick = function() { deleteMessage(data.message_id); };
+            messageDiv.appendChild(delBtn);
+        }
+        
+        messagesDiv.appendChild(messageDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    };
+    
+    chatSocket.onclose = function(e) {
+        console.log('WebSocket disconnected');
+    };
+    
+    chatSocket.onerror = function(e) {
+        console.error('WebSocket error:', e);
+    };
+    
+    const messageInput = document.getElementById('message-input');
+    
+    messageInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && messageInput.value.trim()) {
+            const message = messageInput.value.trim();
+            
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'message_type': 'text'
+            }));
+            
+            messageInput.value = '';
+        }
+    });
+    
+    const imageInput = document.getElementById('image-input');
+    const fileInput = document.getElementById('file-input');
+    
+    imageInput.addEventListener('change', function(e) {
+        if (e.target.files.length > 0) {
+            uploadFile(e.target.files[0], 'image');
+        }
+    });
+    
+    fileInput.addEventListener('change', function(e) {
+        if (e.target.files.length > 0) {
+            uploadFile(e.target.files[0], 'file');
+        }
+    });
+    
+    function uploadFile(file, type) {
+        const formData = new FormData();
+        formData.append(type, file);
+        
+        fetch(`/messages/chat/${chatId}/upload/`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'ok') {
+                chatSocket.send(JSON.stringify({
+                    'message': '',
+                    'message_type': data.type,
+                    'message_id': data.message_id
+                }));
+            } else {
+                alert('Error uploading file: ' + (data.error || 'Unknown error'));
+            }
+        })
+        .catch(error => {
+            console.error('Upload error:', error);
+            alert('Error uploading file');
+        });
+    }
+
+    function deleteMessage(messageId) {
+        if (!confirm('{% trans "Delete this message?" %}')) return;
+        chatSocket.send(JSON.stringify({
+            'message_type': 'delete',
+            'message_id': messageId
+        }));
+    }
+    
+    const messagesDiv = document.getElementById('chat-messages');
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+</script>
+{% endif %}
+
+{% endif %}
+{% endblock %}

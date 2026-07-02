@@ -1,0 +1,13 @@
+{% extends "index.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Signed Out" %}{% endblock %}
+
+{% block content %}
+<div class="box" style="max-width: 480px; text-align: center;">
+    <h1 style="color: var(--tn-blue);">{% trans "Signed Out" %}</h1>
+    <p style="color: var(--tn-text-dim);">{% trans "You have been signed out." %}</p>
+    <a href="{% url 'accounts:login' %}" class="btn btn-primary">{% trans "Sign In Again" %}</a>
+</div>
+{% endblock %}

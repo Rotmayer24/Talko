@@ -1,0 +1,121 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% block content %}
+<div class="box" style="max-width: 800px;">
+    <h2 style="margin-bottom: 30px; color: var(--tn-blue);">{% blocktrans %}Group Settings: {{ group.group_name }}{% endblocktrans %}</h2>
+    
+    <form method="post" enctype="multipart/form-data" style="margin-bottom: 30px;">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="update_info">
+        
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <label class="label">{% trans "Group Name" %}</label>
+                <input type="text" name="group_name" value="{{ group.group_name }}" required
+                       style="width: 100%; padding: 12px; background: var(--tn-surface); border: 1px solid var(--tn-muted); border-radius: 8px; color: var(--tn-text); font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <label class="label">{% trans "Group Avatar" %}</label>
+                {% if group.group_avatar %}
+                <div style="width: 80px; height: 80px; border-radius: 50%; overflow: hidden; margin-bottom: 10px;">
+                    <img src="{{ group.group_avatar.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                {% endif %}
+                <input type="file" name="group_avatar" accept="image/*"
+                       style="width: 100%; padding: 12px; background: var(--tn-surface); border: 1px solid var(--tn-muted); border-radius: 8px; color: var(--tn-text); font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">
+            </div>
+            
+            <button type="submit" class="btn btn-primary">{% trans "Save Changes" %}</button>
+        </div>
+    </form>
+    
+    <hr style="border: none; border-top: 1px solid var(--tn-muted); margin: 30px 0;">
+    
+    <h3 style="color: var(--tn-text); margin-bottom: 15px;">{% blocktrans %}Members ({{ members.count }}){% endblocktrans %}</h3>
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 30px;">
+        {% for member in members %}
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: var(--tn-surface); border-radius: 8px; border: 1px solid var(--tn-muted);">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="chat-avatar" style="width: 40px; height: 40px;">
+                    {% if member.profile.avatar %}
+                        <img src="{{ member.profile.avatar.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    {% else %}
+                        {{ member.username|first|upper }}
+                    {% endif %}
+                </div>
+                <div>
+                    <div style="color: var(--tn-text); font-weight: 600;">
+                        {{ member.username }}
+                        {% if member == group.created_by %}
+                        <span style="color: var(--tn-blue); font-size: 0.8rem;">{% trans "Creator" %}</span>
+                        {% elif member in admins %}
+                        <span style="color: var(--tn-purple); font-size: 0.8rem;">{% trans "Admin" %}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            {% if member != group.created_by %}
+            <div style="display: flex; gap: 8px;">
+                {% if member in admins %}
+                <form method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="demote_admin">
+                    <input type="hidden" name="user_id" value="{{ member.id }}">
+                    <button type="submit" class="btn-sm btn-sm-demote">{% trans "Demote" %}</button>
+                </form>
+                {% else %}
+                <form method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="promote_admin">
+                    <input type="hidden" name="user_id" value="{{ member.id }}">
+                    <button type="submit" class="btn-sm btn-sm-promote">{% trans "Promote" %}</button>
+                </form>
+                {% endif %}
+                
+                <form method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="remove_member">
+                    <input type="hidden" name="user_id" value="{{ member.id }}">
+                    <button type="submit" class="btn-sm btn-sm-remove">{% trans "Remove" %}</button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    
+    {% if friends %}
+    <h3 style="color: var(--tn-text); margin-bottom: 15px;">{% trans "Add Members" %}</h3>
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 30px;">
+        {% for friend in friends %}
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: var(--tn-surface); border-radius: 8px; border: 1px solid var(--tn-muted);">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="chat-avatar" style="width: 40px; height: 40px;">
+                    {% if friend.profile.avatar %}
+                        <img src="{{ friend.profile.avatar.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    {% else %}
+                        {{ friend.username|first|upper }}
+                    {% endif %}
+                </div>
+                <span style="color: var(--tn-text);">{{ friend.username }}</span>
+            </div>
+            
+            <form method="post" style="display: inline;">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="add_member">
+                <input type="hidden" name="user_id" value="{{ friend.id }}">
+                <button type="submit" class="btn-sm btn-sm-add">{% trans "Add" %}</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <div style="display: flex; gap: 15px;">
+        <a href="/?chat={{ group.id }}" class="btn">{% trans "Back to Chat" %}</a>
+        <a href="{% url 'messages:leave_group' group.id %}" class="btn" style="background: var(--tn-orange); border-color: var(--tn-orange); color: white;">{% trans "Leave Group" %}</a>
+    </div>
+</div>
+{% endblock %}

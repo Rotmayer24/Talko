@@ -1,0 +1,485 @@
+# Talko English Translation.
+msgid ""
+msgstr ""
+"Project-Id-Version: Talko\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-28 15:13+0200\n"
+"PO-Revision-Date: 2026-06-28 15:13+0200\n"
+"Last-Translator: \n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Change Password"
+msgstr "Change Password"
+
+msgid "Old Password"
+msgstr "Old Password"
+
+msgid "New Password"
+msgstr "New Password"
+
+msgid "Confirm New Password"
+msgstr "Confirm New Password"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Edit Profile"
+msgstr "Edit Profile"
+
+msgid "Username"
+msgstr "Username"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Avatar"
+msgstr "Avatar"
+
+msgid "Bio"
+msgstr "Bio"
+
+msgid "Save Changes"
+msgstr "Save Changes"
+
+msgid "Verification Sent"
+msgstr "Verification Sent"
+
+msgid "Check Your Inbox"
+msgstr "Check Your Inbox"
+
+#, python-format
+msgid ""
+"We've sent a verification link to <strong>%(email)s</strong>.\n"
+"        Open it to confirm your email address. The link is valid for 24 "
+"hours."
+msgstr ""
+"We've sent a verification link to <strong>%(email)s</strong>.\n"
+"        Open it to confirm your email address. The link is valid for 24 "
+"hours."
+
+msgid "Back to Profile"
+msgstr "Back to Profile"
+
+msgid "Go to Sign In"
+msgstr "Go to Sign In"
+
+msgid "Please Wait"
+msgstr "Please Wait"
+
+msgid "Hold On"
+msgstr "Hold On"
+
+msgid ""
+"A verification email was sent recently. Please wait a few minutes before "
+"requesting another one."
+msgstr ""
+"A verification email was sent recently. Please wait a few minutes before "
+"requesting another one."
+
+msgid "Email Verification"
+msgstr "Email Verification"
+
+msgid "Email Verified"
+msgstr "Email Verified"
+
+msgid "Your email address has been confirmed. Thank you!"
+msgstr "Your email address has been confirmed. Thank you!"
+
+msgid "Verification Failed"
+msgstr "Verification Failed"
+
+msgid "This verification link is invalid or has expired."
+msgstr "This verification link is invalid or has expired."
+
+msgid "Send a new link"
+msgstr "Send a new link"
+
+msgid "Signed Out"
+msgstr "Signed Out"
+
+msgid "You have been signed out."
+msgstr "You have been signed out."
+
+msgid "Sign In Again"
+msgstr "Sign In Again"
+
+msgid "Sign In"
+msgstr "Sign In"
+
+msgid "Welcome Back"
+msgstr "Welcome Back"
+
+msgid "Sign in to continue"
+msgstr "Sign in to continue"
+
+msgid "Don't have an account?"
+msgstr "Don't have an account?"
+
+msgid "Create One"
+msgstr "Create One"
+
+msgid "Notifications"
+msgstr "Notifications"
+
+msgid "Mark all as read"
+msgstr "Mark all as read"
+
+msgid "Request"
+msgstr "Request"
+
+msgid "Accepted"
+msgstr "Accepted"
+
+msgid "Message"
+msgstr "Message"
+
+msgid "Group"
+msgstr "Group"
+
+msgid "ago"
+msgstr "ago"
+
+msgid "No notifications yet"
+msgstr "No notifications yet"
+
+msgid "Back to Home"
+msgstr "Back to Home"
+
+msgid "Profile"
+msgstr "Profile"
+
+msgid "Email verified"
+msgstr "Email verified"
+
+msgid "Email not verified"
+msgstr "Email not verified"
+
+msgid "verify now"
+msgstr "verify now"
+
+msgid "Theme"
+msgstr "Theme"
+
+msgid "Logout"
+msgstr "Logout"
+
+msgid "Create Account"
+msgstr "Create Account"
+
+msgid "Already have an account?"
+msgstr "Already have an account?"
+
+msgid "Friend Requests"
+msgstr "Friend Requests"
+
+msgid "Accept"
+msgstr "Accept"
+
+msgid "Reject"
+msgstr "Reject"
+
+msgid "No pending requests"
+msgstr "No pending requests"
+
+msgid "Search Users & Groups"
+msgstr "Search Users & Groups"
+
+msgid "Search by username or group name..."
+msgstr "Search by username or group name..."
+
+msgid "Search"
+msgstr "Search"
+
+msgid "Users"
+msgstr "Users"
+
+msgid "Friends"
+msgstr "Friends"
+
+msgid "Pending"
+msgstr "Pending"
+
+msgid "Add Friend"
+msgstr "Add Friend"
+
+msgid "Groups"
+msgstr "Groups"
+
+#, python-format
+msgid "%(data.group.users.count)s members"
+msgstr "%(data.group.users.count)s members"
+
+msgid "Member"
+msgstr "Member"
+
+msgid "Join Group"
+msgstr "Join Group"
+
+#, python-format
+msgid "No results found for \"%(query)s\""
+msgstr "No results found for \"%(query)s\""
+
+msgid "Enter a username or group name to search"
+msgstr "Enter a username or group name to search"
+
+msgid "Find Users"
+msgstr "Find Users"
+
+msgid "Search by username..."
+msgstr "Search by username..."
+
+msgid "Friend"
+msgstr "Friend"
+
+msgid "No users found"
+msgstr "No users found"
+
+msgid "Blackjack"
+msgstr "Blackjack"
+
+msgid "BALANCE"
+msgstr "BALANCE"
+
+msgid "DEALER"
+msgstr "DEALER"
+
+msgid "YOUR HAND"
+msgstr "YOUR HAND"
+
+msgid "DEAL"
+msgstr "DEAL"
+
+msgid "HIT"
+msgstr "HIT"
+
+msgid "STAND"
+msgstr "STAND"
+
+msgid "Back to Casino"
+msgstr "Back to Casino"
+
+msgid "Collection"
+msgstr "Collection"
+
+msgid "COLLECTED"
+msgstr "COLLECTED"
+
+msgid "VALUE"
+msgstr "VALUE"
+
+msgid ""
+"Win cards by playing Slots and Blackjack. Sell duplicates back for coins."
+msgstr ""
+"Win cards by playing Slots and Blackjack. Sell duplicates back for coins."
+
+msgid "Sell 1"
+msgstr "Sell 1"
+
+msgid "Sell all"
+msgstr "Sell all"
+
+msgid "Not yet found"
+msgstr "Not yet found"
+
+msgid "Casino"
+msgstr "Casino"
+
+msgid "BETS"
+msgstr "BETS"
+
+msgid "WON"
+msgstr "WON"
+
+msgid "LOST"
+msgstr "LOST"
+
+msgid "Slots"
+msgstr "Slots"
+
+msgid "Match 3 symbols — cherries, sevens, diamonds & more!"
+msgstr "Match 3 symbols — cherries, sevens, diamonds & more!"
+
+msgid "Beat the dealer — get 21 without going bust!"
+msgstr "Beat the dealer — get 21 without going bust!"
+
+msgid "Cards"
+msgstr "Cards"
+
+msgid "Win collectible cards by playing — sell duplicates for coins!"
+msgstr "Win collectible cards by playing — sell duplicates for coins!"
+
+msgid "Shop"
+msgstr "Shop"
+
+msgid "Buy coins"
+msgstr "Buy coins"
+
+msgid "Recent Bets"
+msgstr "Recent Bets"
+
+msgid "Casino Shop"
+msgstr "Casino Shop"
+
+msgid "Buy Coins"
+msgstr "Buy Coins"
+
+msgid "Buy"
+msgstr "Buy"
+
+msgid "Pull the lever and try your luck!"
+msgstr "Pull the lever and try your luck!"
+
+msgid "SPIN"
+msgstr "SPIN"
+
+msgid "PAYOUT TABLE"
+msgstr "PAYOUT TABLE"
+
+msgid "Two matching"
+msgstr "Two matching"
+
+msgid "Chats"
+msgstr "Chats"
+
+msgid "Create Group"
+msgstr "Create Group"
+
+msgid "Search..."
+msgstr "Search..."
+
+msgid "Secret"
+msgstr "Secret"
+
+#, python-format
+msgid "%(chat.users.count)s members"
+msgstr "%(chat.users.count)s members"
+
+msgid "click to open chat"
+msgstr "click to open chat"
+
+msgid "No chats yet"
+msgstr "No chats yet"
+
+msgid "No messages yet"
+msgstr "No messages yet"
+
+msgid "Select a chat to start messaging"
+msgstr "Select a chat to start messaging"
+
+msgid "Upload Image"
+msgstr "Upload Image"
+
+msgid "Upload File"
+msgstr "Upload File"
+
+msgid "Type a message..."
+msgstr "Type a message..."
+
+msgid "Group Settings"
+msgstr "Group Settings"
+
+msgid "Settings"
+msgstr "Settings"
+
+msgid "Requests"
+msgstr "Requests"
+
+msgid "Home"
+msgstr "Home"
+
+msgid "Sign Up"
+msgstr "Sign Up"
+
+msgid "Group Name"
+msgstr "Group Name"
+
+msgid "Group Avatar (optional)"
+msgstr "Group Avatar (optional)"
+
+msgid "Add Members"
+msgstr "Add Members"
+
+msgid "No friends to add"
+msgstr "No friends to add"
+
+#, python-format
+msgid "Group Settings: %(group.group_name)s"
+msgstr "Group Settings: %(group.group_name)s"
+
+msgid "Group Avatar"
+msgstr "Group Avatar"
+
+#, python-format
+msgid "Members (%(members.count)s)"
+msgstr "Members (%(members.count)s)"
+
+msgid "Creator"
+msgstr "Creator"
+
+msgid "Admin"
+msgstr "Admin"
+
+msgid "Demote"
+msgstr "Demote"
+
+msgid "Promote"
+msgstr "Promote"
+
+msgid "Remove"
+msgstr "Remove"
+
+msgid "Add"
+msgstr "Add"
+
+msgid "Back to Chat"
+msgstr "Back to Chat"
+
+msgid "Leave Group"
+msgstr "Leave Group"
+
+msgid "Welcome to Talko"
+msgstr "Welcome to Talko"
+
+msgid "Secure messaging platform with end-to-end encryption"
+msgstr "Secure messaging platform with end-to-end encryption"
+
+msgid "Real-time Messaging"
+msgstr "Real-time Messaging"
+
+msgid "Instant message delivery with WebSocket technology"
+msgstr "Instant message delivery with WebSocket technology"
+
+msgid "End-to-End Encryption"
+msgstr "End-to-End Encryption"
+
+msgid "Your messages are secure with secret chats"
+msgstr "Your messages are secure with secret chats"
+
+msgid "Groups & Friends"
+msgstr "Groups & Friends"
+
+msgid "Create group chats and connect with friends"
+msgstr "Create group chats and connect with friends"
+
+msgid "File Sharing"
+msgstr "File Sharing"
+
+msgid "Share images and files securely"
+msgstr "Share images and files securely"
+
+msgid "Get Started"
+msgstr "Get Started"
+
+msgid "Message deleted"
+msgstr "Message deleted"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Delete this message?"
+msgstr "Delete this message?"

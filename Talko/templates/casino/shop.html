@@ -1,0 +1,169 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% block title %}Shop — Talko Casino{% endblock %}
+{% block content %}
+<style>
+.shop-container {
+    max-width: 700px;
+    margin: 100px auto 40px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+}
+.shop-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.shop-header h1 {
+    font-size: 1.5rem;
+    color: var(--tn-green);
+}
+.shop-section {
+    margin-bottom: 30px;
+}
+.shop-section h2 {
+    font-size: 1.1rem;
+    color: var(--tn-text);
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--tn-muted);
+}
+.shop-grid {
+    display: grid;
+    gap: 12px;
+}
+.shop-item {
+    background: var(--tn-overlay);
+    border: 1px solid var(--tn-muted);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.22s ease;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.shop-item:hover {
+    border-color: var(--tn-green);
+    box-shadow: 0 0 12px rgba(158, 206, 106, 0.15);
+}
+.shop-item-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.shop-item-emoji {
+    font-size: 1.8rem;
+}
+.shop-item-name {
+    color: var(--tn-text);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+.shop-item-cost {
+    font-size: 0.85rem;
+    color: var(--tn-text-dim);
+}
+.shop-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 8px;
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    color: white;
+}
+.shop-btn.buy-coins {
+    background: var(--tn-orange);
+}
+.shop-btn.buy-coins:hover {
+    box-shadow: 0 0 15px rgba(255, 158, 100, 0.4);
+    transform: scale(1.05);
+}
+.shop-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+</style>
+
+<div class="shop-container">
+    <div class="shop-header">
+        <h1>🛒 {% trans "Casino Shop" %}</h1>
+        <div style="text-align: right;">
+            <div style="font-size: 0.7rem; color: var(--tn-text-dim);">{% trans "BALANCE" %}</div>
+            <div id="balance" style="font-size: 1.2rem; color: var(--tn-orange); font-weight: 700;">{{ profile.balance }}</div>
+        </div>
+    </div>
+
+    {% if messages %}
+    <div style="margin-bottom: 20px;">
+        {% for msg in messages %}
+        <div style="padding: 10px 15px; border-radius: 8px; {% if msg.tags == 'success' %}background: rgba(158,206,106,0.15); border: 1px solid var(--tn-green); color: var(--tn-green);{% else %}background: rgba(255,158,100,0.15); border: 1px solid var(--tn-orange); color: var(--tn-orange);{% endif %} margin-bottom: 8px;">
+            {{ msg }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="shop-section">
+        <h2>🪙 {% trans "Buy Coins" %}</h2>
+        <div class="shop-grid">
+            {% for item in shop_items %}
+            <div class="shop-item">
+                <div class="shop-item-info">
+                    <div class="shop-item-emoji">{{ item.emoji }}</div>
+                    <div>
+                        <div class="shop-item-name">{{ item.name }}</div>
+                        <div class="shop-item-cost">${{ item.cost }}</div>
+                    </div>
+                </div>
+                <button class="shop-btn buy-coins" onclick="buyCoins('{{ item.id }}', this)">
+                    {% trans "Buy" %}
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <a href="{% url 'casino:home' %}" style="display: block; text-align: center; color: var(--tn-text-dim); text-decoration: none; font-size: 0.85rem;">← {% trans "Back to Casino" %}</a>
+</div>
+
+<script>
+const csrf = "{{ csrf_token }}";
+const balanceEl = document.getElementById('balance');
+
+function buyCoins(itemId, btn) {
+    btn.disabled = true;
+    btn.textContent = '...';
+
+    fetch("{% url 'casino:buy_coins' %}", {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'X-CSRFToken': csrf},
+        body: JSON.stringify({ item_id: itemId }),
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            balanceEl.textContent = data.balance;
+            btn.textContent = '✓ Done';
+            setTimeout(() => { btn.textContent = 'Buy'; btn.disabled = false; }, 2000);
+        } else {
+            btn.textContent = 'Error';
+            setTimeout(() => { btn.textContent = 'Buy'; btn.disabled = false; }, 2000);
+        }
+    })
+    .catch(() => {
+        btn.textContent = 'Error';
+        setTimeout(() => { btn.textContent = 'Buy'; btn.disabled = false; }, 2000);
+    });
+}
+</script>
+{% endblock %}

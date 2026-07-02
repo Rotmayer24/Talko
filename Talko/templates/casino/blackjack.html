@@ -1,0 +1,435 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% block title %}Blackjack — Talko Casino{% endblock %}
+{% block content %}
+<style>
+.bj-container {
+    max-width: 800px;
+    margin: 90px auto 40px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+}
+.bj-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.bj-header h1 { font-size: 1.5rem; color: var(--tn-purple); }
+
+.table {
+    background: linear-gradient(135deg, #1a5c2a, #0d3b1a);
+    border: 3px solid #8b6914;
+    border-radius: 20px;
+    padding: 30px 20px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.5), inset 0 0 60px rgba(0,0,0,0.3);
+    margin-bottom: 20px;
+}
+
+.hand-section {
+    margin-bottom: 25px;
+}
+.hand-label {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+}
+.hand-value {
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-left: 10px;
+}
+.cards {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.card {
+    width: 80px;
+    height: 112px;
+    background: white;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    position: relative;
+    transition: transform 0.3s ease;
+    animation: dealCard 0.3s ease;
+}
+.card.hidden {
+    background: linear-gradient(135deg, #1a237e, #283593);
+    color: white;
+    font-size: 2rem;
+}
+.card .rank { font-size: 1.1rem; }
+.card .suit { font-size: 1.4rem; }
+.card.red { color: #d32f2f; }
+.card.black { color: #212121; }
+
+@keyframes dealCard {
+    from { transform: translateY(-60px) rotate(-10deg); opacity: 0; }
+    to { transform: translateY(0) rotate(0); opacity: 1; }
+}
+
+.bj-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.bet-wrapper {
+    display: flex;
+    align-items: center;
+    border: 2px solid var(--tn-muted);
+    border-radius: 10px;
+    background: var(--tn-surface);
+    overflow: hidden;
+    transition: border-color 0.22s ease, box-shadow 0.22s ease;
+}
+.bet-wrapper:focus-within {
+    border-color: var(--tn-green);
+    box-shadow: 0 0 12px rgba(158, 206, 106, 0.25);
+}
+.bet-input {
+    width: 70px;
+    padding: 10px 0;
+    background: transparent;
+    border: none;
+    color: var(--tn-text);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-align: center;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+.bet-input::-webkit-inner-spin-button,
+.bet-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.bet-input:focus {
+    outline: none;
+}
+.bet-btn {
+    width: 36px;
+    height: 44px;
+    background: transparent;
+    border: none;
+    color: var(--tn-text-dim);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    user-select: none;
+}
+.bet-btn:hover {
+    color: var(--tn-text);
+    background: rgba(255,255,255,0.05);
+}
+.bet-btn:active {
+    background: rgba(255,255,255,0.1);
+}
+.bj-controls input {
+    width: 100px;
+    padding: 10px 14px;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    color: white;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 1rem;
+    text-align: center;
+}
+.bj-btn {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 8px;
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    color: white;
+}
+.bj-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+.bj-btn.deal { background: var(--tn-purple); }
+.bj-btn.hit { background: var(--tn-blue); }
+.bj-btn.stand { background: var(--tn-orange); }
+.bj-btn:hover:not(:disabled) { transform: scale(1.05); }
+
+.bj-result {
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    min-height: 40px;
+    padding: 12px;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+.bj-result.win { color: #66bb6a; }
+.bj-result.lose { color: #ef5350; }
+.bj-result.push { color: #ffa726; }
+.bj-result.blackjack { color: #ffd54f; }
+</style>
+
+<div class="bj-container">
+    <div class="bj-header">
+        <h1>🃏 {% trans "Blackjack" %}</h1>
+        <div style="text-align: right;">
+            <div style="font-size: 0.7rem; color: var(--tn-text-dim);">{% trans "BALANCE" %}</div>
+            <div id="balance" style="font-size: 1.2rem; color: var(--tn-orange); font-weight: 700;">{{ profile.balance }}</div>
+        </div>
+    </div>
+
+    <div class="table">
+        <!-- Dealer hand -->
+        <div class="hand-section">
+            <div class="hand-label">
+                {% trans "DEALER" %} <span class="hand-value" id="dealerValue">?</span>
+            </div>
+            <div class="cards" id="dealerCards"></div>
+        </div>
+
+        <div style="border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;"></div>
+
+        <!-- Player hand -->
+        <div class="hand-section">
+            <div class="hand-label">
+                {% trans "YOUR HAND" %} <span class="hand-value" id="playerValue">?</span>
+            </div>
+            <div class="cards" id="playerCards"></div>
+        </div>
+
+        <div id="resultDisplay" class="bj-result"></div>
+
+        <div class="bj-controls" id="controls">
+            <div class="bet-wrapper">
+                <button class="bet-btn bet-minus" onclick="adjustBet(-10)">−</button>
+                <input type="number" id="betAmount" value="10" min="1" max="{{ profile.balance }}" class="bet-input">
+                <button class="bet-btn bet-plus" onclick="adjustBet(10)">+</button>
+            </div>
+            <button id="dealBtn" class="bj-btn deal">{% trans "DEAL" %}</button>
+            <button id="hitBtn" class="bj-btn hit" disabled>{% trans "HIT" %}</button>
+            <button id="standBtn" class="bj-btn stand" disabled>{% trans "STAND" %}</button>
+        </div>
+    </div>
+
+    <a href="{% url 'casino:home' %}" style="display: block; text-align: center; color: var(--tn-text-dim); text-decoration: none; font-size: 0.85rem;">← {% trans "Back to Casino" %}</a>
+</div>
+
+<div id="cardDropBanner" class="card-drop-banner"></div>
+
+<style>
+.card-drop-banner {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-12px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--tn-overlay);
+    border: 2px solid var(--rarity, var(--tn-cyan));
+    box-shadow: 0 0 18px -4px var(--rarity, var(--tn-cyan));
+    color: var(--tn-text);
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    pointer-events: none;
+}
+.card-drop-banner.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.card-drop-banner .cd-emoji { font-size: 1.6rem; }
+.card-drop-banner .cd-rarity {
+    color: var(--rarity, var(--tn-cyan));
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+}
+</style>
+
+<script>
+const csrf = "{{ csrf_token }}";
+const dealerCards = document.getElementById('dealerCards');
+const playerCards = document.getElementById('playerCards');
+const dealerValue = document.getElementById('dealerValue');
+const playerValue = document.getElementById('playerValue');
+const resultDisplay = document.getElementById('resultDisplay');
+const balanceEl = document.getElementById('balance');
+const dealBtn = document.getElementById('dealBtn');
+const hitBtn = document.getElementById('hitBtn');
+const standBtn = document.getElementById('standBtn');
+const betInput = document.getElementById('betAmount');
+
+function adjustBet(delta) {
+    let val = parseInt(betInput.value) || 1;
+    let min = parseInt(betInput.min) || 1;
+    let max = parseInt(betInput.max) || 99999;
+    val = Math.max(min, Math.min(max, val + delta));
+    betInput.value = val;
+}
+
+function renderCards(container, cards, hideSecond) {
+    container.innerHTML = '';
+    cards.forEach((c, i) => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        if (hideSecond && i === 1) {
+            div.classList.add('hidden');
+            div.textContent = '?';
+        } else {
+            div.classList.add(c.color);
+            div.innerHTML = `<span class="rank">${c.rank}</span><span class="suit">${c.suit}</span>`;
+        }
+        container.appendChild(div);
+    });
+}
+
+function enableControls(deal, hit, stand) {
+    dealBtn.disabled = !deal;
+    hitBtn.disabled = !hit;
+    standBtn.disabled = !stand;
+    betInput.disabled = !deal;
+}
+
+function setResult(text, cls) {
+    resultDisplay.textContent = text;
+    resultDisplay.className = 'bj-result ' + (cls || '');
+}
+
+dealBtn.addEventListener('click', () => {
+    const amount = parseInt(betInput.value);
+    if (!amount || amount <= 0) return alert('Enter a valid bet amount');
+
+    enableControls(false, false, false);
+    setResult('Dealing...', '');
+
+    fetch("{% url 'casino:blackjack_deal' %}", {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'X-CSRFToken': csrf},
+        body: JSON.stringify({ bet_amount: amount }),
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.error) {
+            enableControls(true, false, false);
+            setResult(data.error, '');
+            return;
+        }
+        renderCards(playerCards, data.player, false);
+        renderCards(dealerCards, data.dealer, true);
+        playerValue.textContent = data.player_value;
+        dealerValue.textContent = data.dealer_value;
+        balanceEl.textContent = data.balance;
+        betInput.max = data.balance;
+
+        if (data.game_over) {
+            enableControls(true, false, false);
+            if (data.result === 'blackjack') setResult('🃏 BLACKJACK! You win!', 'blackjack');
+            else if (data.result === 'push') setResult('Push — tie.', 'push');
+            else if (data.result === 'dealer_blackjack') setResult('Dealer has Blackjack!', 'lose');
+            if (data.card_drop) showCardDrop(data.card_drop);
+        } else {
+            enableControls(false, true, true);
+            setResult('Hit or Stand?', '');
+        }
+    });
+});
+
+hitBtn.addEventListener('click', () => {
+    enableControls(false, false, false);
+
+    fetch("{% url 'casino:blackjack_hit' %}", {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'X-CSRFToken': csrf},
+        body: JSON.stringify({}),
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.error) {
+            enableControls(false, true, true);
+            setResult(data.error, '');
+            return;
+        }
+        renderCards(playerCards, data.player, false);
+        playerValue.textContent = data.player_value;
+        balanceEl.textContent = data.balance;
+
+        if (data.game_over) {
+            enableControls(true, false, false);
+            if (data.result === 'bust') setResult('💥 Bust! You went over 21.', 'lose');
+            betInput.max = data.balance;
+            if (data.card_drop) showCardDrop(data.card_drop);
+        } else {
+            enableControls(false, true, true);
+        }
+    });
+});
+
+standBtn.addEventListener('click', () => {
+    enableControls(false, false, false);
+    setResult('Dealer\'s turn...', '');
+
+    fetch("{% url 'casino:blackjack_stand' %}", {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'X-CSRFToken': csrf},
+        body: JSON.stringify({}),
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.error) {
+            enableControls(true, false, false);
+            setResult(data.error, '');
+            return;
+        }
+        renderCards(playerCards, data.player, false);
+        renderCards(dealerCards, data.dealer, false);
+        playerValue.textContent = data.player_value;
+        dealerValue.textContent = data.dealer_value;
+        balanceEl.textContent = data.balance;
+        betInput.max = data.balance;
+        enableControls(true, false, false);
+
+        if (data.result === 'player_wins') setResult('🎉 You win!', 'win');
+        else if (data.result === 'dealer_wins') setResult('Dealer wins.', 'lose');
+        else if (data.result === 'dealer_bust') setResult('💥 Dealer busts! You win!', 'win');
+        else if (data.result === 'push') setResult('Push — tie.', 'push');
+
+        if (data.card_drop) showCardDrop(data.card_drop);
+    });
+});
+
+let cardDropTimer = null;
+function showCardDrop(card) {
+    const el = document.getElementById('cardDropBanner');
+    el.style.setProperty('--rarity', card.color);
+    el.innerHTML = `<span class="cd-emoji">${card.emoji}</span>` +
+        `<span>Card won! <strong>${card.name}</strong> ` +
+        `<span class="cd-rarity">${card.label}</span></span>`;
+    el.classList.add('show');
+    clearTimeout(cardDropTimer);
+    cardDropTimer = setTimeout(() => el.classList.remove('show'), 3500);
+}
+</script>
+{% endblock %}
