@@ -1,35 +1,34 @@
-/* Catppuccin Mocha. */
 :root {
-    --tn-bg: #1e1e2e;
-    --tn-bg-alt: #181825;
-    --tn-surface: #292c3c;
-    --tn-overlay: #313244;
-    --tn-muted: #45475a;
-    --tn-subtle: #6c7086;
-    --tn-text: #cdd6f4;
-    --tn-text-dim: #a6adc8;
+  --tn-bg: #1e1e2e;
+  --tn-bg-alt: #181825;
+  --tn-surface: #292c3c;
+  --tn-overlay: #313244;
+  --tn-muted: #45475a;
+  --tn-subtle: #6c7086;
+  --tn-text: #cdd6f4;
+  --tn-text-dim: #a6adc8;
 
-    --tn-blue: #89b4fa;
-    --tn-cyan: #94e2d5;
-    --tn-purple: #cba6f7;
-    --tn-green: #a6e3a1;
-    --tn-orange: #fab387;
-    --tn-red: #f38ba8;
-    --tn-yellow: #f9e2af;
+  --tn-blue: #89b4fa;
+  --tn-cyan: #94e2d5;
+  --tn-purple: #cba6f7;
+  --tn-green: #a6e3a1;
+  --tn-orange: #fab387;
+  --tn-red: #f38ba8;
+  --tn-yellow: #f9e2af;
 
-    --tn-blue-rgb: 137, 180, 250;
-    --tn-purple-rgb: 203, 166, 247;
-    --tn-cyan-rgb: 148, 226, 213;
+  --tn-blue-rgb: 137, 180, 250;
+  --tn-purple-rgb: 203, 166, 247;
+  --tn-cyan-rgb: 148, 226, 213;
 
-    --tn-header-bg: rgba(24, 24, 37, 0.82);
-    --tn-dot: rgba(203, 166, 247, 0.06);
-    --tn-glow-1: rgba(245, 194, 231, 0.07);
-    --tn-glow-2: rgba(137, 180, 250, 0.06);
+  --tn-header-bg: rgba(24, 24, 37, 0.82);
+  --tn-dot: rgba(203, 166, 247, 0.06);
+  --tn-glow-1: rgba(245, 194, 231, 0.07);
+  --tn-glow-2: rgba(137, 180, 250, 0.06);
 
-    --glow-blue:
-        0 0 12px rgba(137, 180, 250, 0.45), 0 0 32px rgba(137, 180, 250, 0.15);
-    --glow-purple:
-        0 0 12px rgba(203, 166, 247, 0.45), 0 0 32px rgba(203, 166, 247, 0.15);
-    --glow-cyan:
-        0 0 12px rgba(148, 226, 213, 0.45), 0 0 32px rgba(148, 226, 213, 0.15);
+  --glow-blue:
+    0 0 12px rgba(137, 180, 250, 0.45), 0 0 32px rgba(137, 180, 250, 0.15);
+  --glow-purple:
+    0 0 12px rgba(203, 166, 247, 0.45), 0 0 32px rgba(203, 166, 247, 0.15);
+  --glow-cyan:
+    0 0 12px rgba(148, 226, 213, 0.45), 0 0 32px rgba(148, 226, 213, 0.15);
 }

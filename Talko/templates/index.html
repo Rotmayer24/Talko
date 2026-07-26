@@ -43,50 +43,6 @@
     <header>
         <nav>
             <ul class="head-list">
-                {% if user.is_authenticated %} 
-                    <li class="burger-menu" id="burgerMenu" onclick="toggleSidebar()">☰</li>
-                {% endif %}
-                {% if user.is_authenticated %}
-                    <li class="dropdown-menu">
-                        <button class="dropdown-toggle" id="dropdownToggle" onclick="toggleDropdown(this)">
-                            {% trans "Settings" %}
-                            {% if unread_notifications_count > 0 %}
-                            <span class="dropdown-badge">{{ unread_notifications_count }}</span>
-                            {% endif %}
-                        </button>
-                        <div class="dropdown-content" id="dropdownContent">
-                            <a href="{% url 'accounts:search' %}" class="dropdown-item">{% trans "Search" %}</a>
-                            <a href="{% url 'accounts:requests' %}" class="dropdown-item">{% trans "Requests" %}</a>
-                            <a href="{% url 'accounts:notifications' %}" class="dropdown-item">
-                                {% trans "Notifications" %}
-                                {% if unread_notifications_count > 0 %}
-                                <span class="dropdown-item-badge">{{ unread_notifications_count }}</span>
-                                {% endif %}
-                            </a>
-                        </div>
-                    </li>
-                {% endif %}
-                <li><a href="/" class="head-item">{% trans "Home" %}</a></li>
-                {% if user.is_authenticated %}
-                    <li><a href="{% url 'casino:home' %}" class="head-item">{% trans "Casino" %}</a></li>
-                {% endif %}
-                {% if user.is_authenticated %} 
-                    <li class="user-menu">
-                        <a href="{% url 'accounts:profile' %}" class="user-profile-link">
-                            <div class="header-avatar">
-                                {% if user.profile.avatar %}
-                                    <img src="{{ user.profile.avatar.url }}" alt="Avatar">
-                                {% else %}
-                                    <span>{{ user.username|first|upper }}</span>
-                                {% endif %}
-                            </div>
-                            <span class="header-username">{{ user.username }}</span>
-                        </a>
-                    </li>
-                {% else %}
-                    <li><a href="{% url 'accounts:login' %}" class="sign-in">{% trans "Sign In" %}</a></li>
-                    <li><a href="{% url 'accounts:register' %}" class="sign-up">{% trans "Sign Up" %}</a></li>
-                {% endif %}
                 <li class="language-selector">
                     {% get_current_language as CURRENT_LANGUAGE %}
                     {% get_language_info_list for LANGUAGES as languages %}
@@ -101,6 +57,56 @@
                             {% endfor %}
                         </select>
                     </form>
+                </li>
+
+                <li class="header-center">
+                    {% if user.is_authenticated %}
+                        <span class="burger-menu" id="burgerMenu" onclick="toggleSidebar()">☰</span>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                        <div class="dropdown-menu">
+                            <button class="dropdown-toggle" id="dropdownToggle" onclick="toggleDropdown(this)">
+                                {% trans "Settings" %}
+                                {% if unread_notifications_count > 0 %}
+                                <span class="dropdown-badge">{{ unread_notifications_count }}</span>
+                                {% endif %}
+                            </button>
+                            <div class="dropdown-content" id="dropdownContent">
+                                <a href="{% url 'accounts:search' %}" class="dropdown-item">{% trans "Search" %}</a>
+                                <a href="{% url 'accounts:requests' %}" class="dropdown-item">{% trans "Requests" %}</a>
+                                <a href="{% url 'accounts:notifications' %}" class="dropdown-item">
+                                    {% trans "Notifications" %}
+                                    {% if unread_notifications_count > 0 %}
+                                    <span class="dropdown-item-badge">{{ unread_notifications_count }}</span>
+                                    {% endif %}
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <a href="/" class="head-item">{% trans "Home" %}</a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'casino:home' %}" class="head-item">{% trans "Casino" %}</a>
+                    {% endif %}
+                </li>
+
+                <li class="header-right">
+                    {% if user.is_authenticated %}
+                        <div class="user-menu">
+                            <a href="{% url 'accounts:profile' %}" class="user-profile-link">
+                                <div class="header-avatar">
+                                    {% if user.profile.avatar %}
+                                        <img src="{{ user.profile.avatar.url }}" alt="Avatar">
+                                    {% else %}
+                                        <span>{{ user.username|first|upper }}</span>
+                                    {% endif %}
+                                </div>
+                                <span class="header-username">{{ user.username }}</span>
+                            </a>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'accounts:login' %}" class="sign-in">{% trans "Sign In" %}</a>
+                        <a href="{% url 'accounts:register' %}" class="sign-up">{% trans "Sign Up" %}</a>
+                    {% endif %}
                 </li>
             </ul>
         </nav>

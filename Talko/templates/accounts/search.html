@@ -8,11 +8,12 @@
     gap: 10px;
     align-items: center;
     justify-content: space-between;
-    padding: 12px;
+    padding: 16px 20px;
     background: var(--tn-surface);
     border-radius: 8px;
     border: 1px solid var(--tn-muted);
     transition: all 0.15s ease;
+    min-height: 70px;
 }
 .search-result-item:hover {
     border-color: var(--tn-subtle);
@@ -61,7 +62,8 @@
     align-items: center;
     justify-content: center;
     gap: 5px;
-    padding: 8px 16px;
+    min-width: 160px;
+    padding: 10px 24px;
     background: var(--tn-green);
     border: none;
     border-radius: 8px;
@@ -72,6 +74,8 @@
     cursor: pointer;
     transition: all 0.22s ease;
     text-decoration: none;
+    text-align: center;
+    flex-shrink: 0;
 }
 .btn-add-friend:hover {
     background: var(--tn-cyan);
@@ -86,7 +90,8 @@
     align-items: center;
     justify-content: center;
     gap: 5px;
-    padding: 8px 16px;
+    min-width: 160px;
+    padding: 10px 24px;
     background: var(--tn-purple);
     border: none;
     border-radius: 8px;
@@ -97,6 +102,8 @@
     cursor: pointer;
     transition: all 0.22s ease;
     text-decoration: none;
+    text-align: center;
+    flex-shrink: 0;
 }
 .btn-join-group:hover {
     background: #b388ff;
@@ -107,10 +114,10 @@
 }
 </style>
 
-<div class="box" style="max-width: 700px;">
+<div class="box" style="max-width: 850px;">
     <h2 style="margin-bottom: 20px; color: var(--tn-blue);">{% trans "Search Users & Groups" %}</h2>
     
-    <form method="get" style="margin-bottom: 30px;">
+    <form method="get" style="margin-bottom: 30px; width: 100%;">
         <div style="display: flex; gap: 8px; align-items: stretch;">
             <input type="text" 
                    name="q" 
@@ -126,7 +133,7 @@
         </div>
     </form>
     
-    <div id="search-results">
+    <div id="search-results" style="width: 100%;">
         {% if query %}
             {% if users or groups %}
                 
@@ -157,7 +164,7 @@
                             {% elif data.status == 'pending' %}
                                 <span class="action-badge pending">⏳ {% trans "Pending" %}</span>
                             {% else %}
-                                <a href="{% url 'accounts:add_friend' data.user.id %}" class="btn-add-friend">＋ {% trans "Add Friend" %}</a>
+                                <a href="{% url 'accounts:add_friend' data.user.id %}" class="btn-add-friend">{% trans "Add Friend" %}</a>
                             {% endif %}
                         </div>
                         {% endfor %}

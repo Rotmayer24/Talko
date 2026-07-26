@@ -9,10 +9,6 @@ from django.db import transaction
 from django.db.models import F
 from .models import CasinoProfile, Bet, Card, UserCard, RARITY_META, RARITY_ORDER
 
-
-# ─── Collectible cards ──────────────────────────────────────
-
-# Chance to win a card each time a game resolves.
 CARD_DROP_CHANCE = 0.15
 
 
@@ -46,7 +42,6 @@ def maybe_drop_card(user):
     }
 
 
-
 def get_or_create_profile(user):
     profile, created = CasinoProfile.objects.get_or_create(user=user)
     return profile
@@ -56,13 +51,15 @@ def get_or_create_profile(user):
 def casino_home(request):
     profile = get_or_create_profile(request.user)
     recent_bets = Bet.objects.filter(user=request.user)[:10]
-    return render(request, "casino/casino.html", {
-        "profile": profile,
-        "recent_bets": recent_bets,
-    })
+    return render(
+        request,
+        "casino/casino.html",
+        {
+            "profile": profile,
+            "recent_bets": recent_bets,
+        },
+    )
 
-
-# ─── Slot Machine ───────────────────────────────────────────
 
 SLOT_SYMBOLS = ["🍒", "🍋", "🍊", "🍇", "🔔", "💎", "7️⃣"]
 
@@ -76,7 +73,6 @@ SLOT_PAYOUTS = {
     ("7️⃣", "7️⃣", "7️⃣"): 50,
 }
 
-# Two matching symbols (partial wins)
 PARTIAL_PAYOUTS = {
     "🍒": 2,
     "🍋": 3,
@@ -105,9 +101,13 @@ def slot_check_result(reels):
 @login_required
 def slots(request):
     profile = get_or_create_profile(request.user)
-    return render(request, "casino/slots.html", {
-        "profile": profile,
-    })
+    return render(
+        request,
+        "casino/slots.html",
+        {
+            "profile": profile,
+        },
+    )
 
 
 @login_required
@@ -155,18 +155,18 @@ def slots_spin(request):
 
     card_drop = maybe_drop_card(request.user)
 
-    return JsonResponse({
-        "reels": reels,
-        "win": result["win"],
-        "match": result["match"],
-        "multiplier": result["multiplier"],
-        "payout": payout,
-        "balance": profile.balance,
-        "card_drop": card_drop,
-    })
+    return JsonResponse(
+        {
+            "reels": reels,
+            "win": result["win"],
+            "match": result["match"],
+            "multiplier": result["multiplier"],
+            "payout": payout,
+            "balance": profile.balance,
+            "card_drop": card_drop,
+        }
+    )
 
-
-# ─── Blackjack ──────────────────────────────────────────────
 
 DECK = []
 for suit in ["♠", "♥", "♦", "♣"]:
@@ -210,9 +210,13 @@ def deal_cards():
 @login_required
 def blackjack(request):
     profile = get_or_create_profile(request.user)
-    return render(request, "casino/blackjack.html", {
-        "profile": profile,
-    })
+    return render(
+        request,
+        "casino/blackjack.html",
+        {
+            "profile": profile,
+        },
+    )
 
 
 @login_required
@@ -220,7 +224,6 @@ def blackjack(request):
 def blackjack_deal(request):
     get_or_create_profile(request.user)
 
-    # Refuse to start a new hand while one is already in progress.
     if request.session.get("blackjack"):
         return JsonResponse({"error": "Finish the current hand first"}, status=400)
 
@@ -275,8 +278,6 @@ def blackjack_deal(request):
                 result_data={"result": result, "player": player, "dealer": dealer},
             )
 
-    # Only persist a playable session when the hand is still open.
-    # Otherwise hit/stand could replay it and pay out again.
     if not game_over:
         request.session["blackjack"] = {
             "deck": deck,
@@ -286,20 +287,22 @@ def blackjack_deal(request):
             "standing": False,
         }
 
-    # A natural blackjack/dealer blackjack ends the hand on the deal.
     card_drop = maybe_drop_card(request.user) if game_over else None
 
-    return JsonResponse({
-        "player": [card_display(c) for c in player],
-        "dealer": [card_display(dealer[0])] + [{"card": "🂠", "rank": "?", "suit": "", "color": "black"}],
-        "player_value": hand_value(player),
-        "dealer_value": hand_value(dealer[:1]),
-        "game_over": game_over,
-        "result": result,
-        "payout": payout,
-        "balance": profile.balance,
-        "card_drop": card_drop,
-    })
+    return JsonResponse(
+        {
+            "player": [card_display(c) for c in player],
+            "dealer": [card_display(dealer[0])]
+            + [{"card": "🂠", "rank": "?", "suit": "", "color": "black"}],
+            "player_value": hand_value(player),
+            "dealer_value": hand_value(dealer[:1]),
+            "game_over": game_over,
+            "result": result,
+            "payout": payout,
+            "balance": profile.balance,
+            "card_drop": card_drop,
+        }
+    )
 
 
 @login_required
@@ -349,16 +352,18 @@ def blackjack_hit(request):
 
     card_drop = maybe_drop_card(request.user) if game_over else None
 
-    return JsonResponse({
-        "card": card_display(card),
-        "player": [card_display(c) for c in player],
-        "player_value": pv,
-        "game_over": game_over,
-        "result": result,
-        "payout": payout,
-        "balance": balance,
-        "card_drop": card_drop,
-    })
+    return JsonResponse(
+        {
+            "card": card_display(card),
+            "player": [card_display(c) for c in player],
+            "player_value": pv,
+            "game_over": game_over,
+            "result": result,
+            "payout": payout,
+            "balance": balance,
+            "card_drop": card_drop,
+        }
+    )
 
 
 @login_required
@@ -419,35 +424,52 @@ def blackjack_stand(request):
 
     card_drop = maybe_drop_card(request.user)
 
-    return JsonResponse({
-        "dealer": [card_display(c) for c in dealer],
-        "player": [card_display(c) for c in player],
-        "player_value": pv,
-        "dealer_value": dv,
-        "game_over": game_over,
-        "result": result,
-        "payout": payout,
-        "balance": profile.balance,
-        "card_drop": card_drop,
-    })
+    return JsonResponse(
+        {
+            "dealer": [card_display(c) for c in dealer],
+            "player": [card_display(c) for c in player],
+            "player_value": pv,
+            "dealer_value": dv,
+            "game_over": game_over,
+            "result": result,
+            "payout": payout,
+            "balance": profile.balance,
+            "card_drop": card_drop,
+        }
+    )
 
-
-# ─── Casino Shop ────────────────────────────────────────────
 
 SHOP_ITEMS = [
     {"id": "coins_100", "name": "100 Coins", "cost": 1.00, "coins": 100, "emoji": "🪙"},
     {"id": "coins_500", "name": "500 Coins", "cost": 4.00, "coins": 500, "emoji": "🪙"},
-    {"id": "coins_1000", "name": "1000 Coins", "cost": 7.00, "coins": 1000, "emoji": "🪙"},
-    {"id": "coins_5000", "name": "5000 Coins", "cost": 30.00, "coins": 5000, "emoji": "🪙"},
+    {
+        "id": "coins_1000",
+        "name": "1000 Coins",
+        "cost": 7.00,
+        "coins": 1000,
+        "emoji": "🪙",
+    },
+    {
+        "id": "coins_5000",
+        "name": "5000 Coins",
+        "cost": 30.00,
+        "coins": 5000,
+        "emoji": "🪙",
+    },
 ]
+
 
 @login_required
 def shop(request):
     profile = get_or_create_profile(request.user)
-    return render(request, "casino/shop.html", {
-        "profile": profile,
-        "shop_items": SHOP_ITEMS,
-    })
+    return render(
+        request,
+        "casino/shop.html",
+        {
+            "profile": profile,
+            "shop_items": SHOP_ITEMS,
+        },
+    )
 
 
 @login_required
@@ -463,31 +485,31 @@ def buy_coins(request):
     for item in SHOP_ITEMS:
         if item["id"] == item_id:
             with transaction.atomic():
-                profile = CasinoProfile.objects.select_for_update().get(user=request.user)
+                profile = CasinoProfile.objects.select_for_update().get(
+                    user=request.user
+                )
                 profile.balance += item["coins"]
                 profile.save()
-            return JsonResponse({
-                "success": True,
-                "coins_added": item["coins"],
-                "balance": profile.balance,
-                "message": f"Purchased {item['name']}!",
-            })
+            return JsonResponse(
+                {
+                    "success": True,
+                    "coins_added": item["coins"],
+                    "balance": profile.balance,
+                    "message": f"Purchased {item['name']}!",
+                }
+            )
 
     return JsonResponse({"error": "Invalid item"}, status=400)
 
-
-# ─── Card Collection ────────────────────────────────────────
 
 @login_required
 def cards(request):
     profile = get_or_create_profile(request.user)
 
     owned = {
-        uc.card_id: uc.quantity
-        for uc in UserCard.objects.filter(user=request.user)
+        uc.card_id: uc.quantity for uc in UserCard.objects.filter(user=request.user)
     }
 
-    # Full catalog, rarest first; owned copies are highlighted, the rest locked.
     catalog = []
     owned_count = 0
     collection_value = 0
@@ -496,28 +518,34 @@ def cards(request):
         if qty:
             owned_count += 1
             collection_value += card.sell_value * qty
-        catalog.append({
-            "id": card.id,
-            "name": card.name,
-            "emoji": card.emoji,
-            "description": card.description,
-            "rarity": card.rarity,
-            "label": card.rarity_label,
-            "color": card.rarity_color,
-            "rank": card.rarity_rank,
-            "value": card.sell_value,
-            "quantity": qty,
-        })
+        catalog.append(
+            {
+                "id": card.id,
+                "name": card.name,
+                "emoji": card.emoji,
+                "description": card.description,
+                "rarity": card.rarity,
+                "label": card.rarity_label,
+                "color": card.rarity_color,
+                "rank": card.rarity_rank,
+                "value": card.sell_value,
+                "quantity": qty,
+            }
+        )
 
     catalog.sort(key=lambda c: (-c["rank"], c["name"]))
 
-    return render(request, "casino/cards.html", {
-        "profile": profile,
-        "catalog": catalog,
-        "owned_count": owned_count,
-        "total_count": len(catalog),
-        "collection_value": collection_value,
-    })
+    return render(
+        request,
+        "casino/cards.html",
+        {
+            "profile": profile,
+            "catalog": catalog,
+            "owned_count": owned_count,
+            "total_count": len(catalog),
+            "collection_value": collection_value,
+        },
+    )
 
 
 @login_required
@@ -541,8 +569,7 @@ def sell_card(request):
     with transaction.atomic():
         try:
             user_card = (
-                UserCard.objects
-                .select_for_update()
+                UserCard.objects.select_for_update()
                 .select_related("card")
                 .get(user=request.user, card_id=card_id)
             )
@@ -564,9 +591,11 @@ def sell_card(request):
         profile.balance += earned
         profile.save()
 
-    return JsonResponse({
-        "success": True,
-        "earned": earned,
-        "remaining": remaining,
-        "balance": profile.balance,
-    })
+    return JsonResponse(
+        {
+            "success": True,
+            "earned": earned,
+            "remaining": remaining,
+            "balance": profile.balance,
+        }
+    )

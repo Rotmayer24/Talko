@@ -1,35 +1,34 @@
-/* Dark — neutral OLED midnight. Pure grays, no indigo, electric blue accent. */
 :root {
-    --tn-bg: #0c0c0e;
-    --tn-bg-alt: #050506;
-    --tn-surface: #18181b;
-    --tn-overlay: #1f1f23;
-    --tn-muted: #34343a;
-    --tn-subtle: #5a5a63;
-    --tn-text: #f4f4f6;
-    --tn-text-dim: #9a9aa3;
+  --tn-bg: #0c0c0e;
+  --tn-bg-alt: #050506;
+  --tn-surface: #18181b;
+  --tn-overlay: #1f1f23;
+  --tn-muted: #34343a;
+  --tn-subtle: #5a5a63;
+  --tn-text: #f4f4f6;
+  --tn-text-dim: #9a9aa3;
 
-    --tn-blue: #4d8dff;
-    --tn-cyan: #2ed3ff;
-    --tn-purple: #a86bff;
-    --tn-green: #43d17a;
-    --tn-orange: #ff9d4d;
-    --tn-red: #ff5c6c;
-    --tn-yellow: #ffce47;
+  --tn-blue: #4d8dff;
+  --tn-cyan: #2ed3ff;
+  --tn-purple: #a86bff;
+  --tn-green: #43d17a;
+  --tn-orange: #ff9d4d;
+  --tn-red: #ff5c6c;
+  --tn-yellow: #ffce47;
 
-    --tn-blue-rgb: 77, 141, 255;
-    --tn-purple-rgb: 168, 107, 255;
-    --tn-cyan-rgb: 46, 211, 255;
+  --tn-blue-rgb: 77, 141, 255;
+  --tn-purple-rgb: 168, 107, 255;
+  --tn-cyan-rgb: 46, 211, 255;
 
-    --tn-header-bg: rgba(5, 5, 6, 0.82);
-    --tn-dot: rgba(255, 255, 255, 0.035);
-    --tn-glow-1: rgba(77, 141, 255, 0.08);
-    --tn-glow-2: rgba(46, 211, 255, 0.05);
+  --tn-header-bg: rgba(5, 5, 6, 0.82);
+  --tn-dot: rgba(255, 255, 255, 0.035);
+  --tn-glow-1: rgba(77, 141, 255, 0.08);
+  --tn-glow-2: rgba(46, 211, 255, 0.05);
 
-    --glow-blue:
-        0 0 12px rgba(77, 141, 255, 0.45), 0 0 32px rgba(77, 141, 255, 0.15);
-    --glow-cyan:
-        0 0 12px rgba(46, 211, 255, 0.45), 0 0 32px rgba(46, 211, 255, 0.15);
-    --glow-purple:
-        0 0 12px rgba(168, 107, 255, 0.45), 0 0 32px rgba(168, 107, 255, 0.15);
+  --glow-blue:
+    0 0 12px rgba(77, 141, 255, 0.45), 0 0 32px rgba(77, 141, 255, 0.15);
+  --glow-cyan:
+    0 0 12px rgba(46, 211, 255, 0.45), 0 0 32px rgba(46, 211, 255, 0.15);
+  --glow-purple:
+    0 0 12px rgba(168, 107, 255, 0.45), 0 0 32px rgba(168, 107, 255, 0.15);
 }

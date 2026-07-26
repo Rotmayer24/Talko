@@ -1,35 +1,34 @@
-/* Light — clean daylight. Soft cool-gray surfaces, accessible accents. */
 :root {
-    --tn-bg: #ffffff;
-    --tn-bg-alt: #eef1f7;
-    --tn-surface: #f6f8fc;
-    --tn-overlay: #ffffff;
-    --tn-muted: #d4dae6;
-    --tn-subtle: #aab2c4;
-    --tn-text: #1a1f2e;
-    --tn-text-dim: #5a6378;
+  --tn-bg: #ffffff;
+  --tn-bg-alt: #eef1f7;
+  --tn-surface: #f6f8fc;
+  --tn-overlay: #ffffff;
+  --tn-muted: #d4dae6;
+  --tn-subtle: #aab2c4;
+  --tn-text: #1a1f2e;
+  --tn-text-dim: #5a6378;
 
-    --tn-blue: #2f5fe0;
-    --tn-cyan: #0a93c7;
-    --tn-purple: #7a3fd0;
-    --tn-green: #2e9e4f;
-    --tn-orange: #d9772b;
-    --tn-red: #d83a52;
-    --tn-yellow: #c08a1e;
+  --tn-blue: #2f5fe0;
+  --tn-cyan: #0a93c7;
+  --tn-purple: #7a3fd0;
+  --tn-green: #2e9e4f;
+  --tn-orange: #d9772b;
+  --tn-red: #d83a52;
+  --tn-yellow: #c08a1e;
 
-    --tn-blue-rgb: 47, 95, 224;
-    --tn-purple-rgb: 122, 63, 208;
-    --tn-cyan-rgb: 10, 147, 199;
+  --tn-blue-rgb: 47, 95, 224;
+  --tn-purple-rgb: 122, 63, 208;
+  --tn-cyan-rgb: 10, 147, 199;
 
-    --tn-header-bg: rgba(255, 255, 255, 0.78);
-    --tn-dot: rgba(47, 95, 224, 0.05);
-    --tn-glow-1: rgba(122, 63, 208, 0.06);
-    --tn-glow-2: rgba(47, 95, 224, 0.05);
+  --tn-header-bg: rgba(255, 255, 255, 0.78);
+  --tn-dot: rgba(47, 95, 224, 0.05);
+  --tn-glow-1: rgba(122, 63, 208, 0.06);
+  --tn-glow-2: rgba(47, 95, 224, 0.05);
 
-    --glow-blue:
-        0 0 12px rgba(47, 95, 224, 0.25), 0 0 28px rgba(47, 95, 224, 0.1);
-    --glow-purple:
-        0 0 12px rgba(122, 63, 208, 0.25), 0 0 28px rgba(122, 63, 208, 0.1);
-    --glow-cyan:
-        0 0 12px rgba(10, 147, 199, 0.25), 0 0 28px rgba(10, 147, 199, 0.1);
+  --glow-blue:
+    0 0 12px rgba(47, 95, 224, 0.25), 0 0 28px rgba(47, 95, 224, 0.1);
+  --glow-purple:
+    0 0 12px rgba(122, 63, 208, 0.25), 0 0 28px rgba(122, 63, 208, 0.1);
+  --glow-cyan:
+    0 0 12px rgba(10, 147, 199, 0.25), 0 0 28px rgba(10, 147, 199, 0.1);
 }

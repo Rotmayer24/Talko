@@ -23,11 +23,10 @@
     <header>
         <nav>
             <ul class="head-list">
-                <li><a href="/" class="head-item">{% trans "Home" %}</a></li>
-                {% get_current_language as CURRENT_LANGUAGE %}
-                {% get_language_info_list for LANGUAGES as languages %}
-                <li>
-                    <form method="post" action="{% url 'set_language' %}">
+                <li class="language-selector">
+                    {% get_current_language as CURRENT_LANGUAGE %}
+                    {% get_language_info_list for LANGUAGES as languages %}
+                    <form method="post" action="{% url 'set_language' %}" style="margin: 0;">
                         {% csrf_token %}
                         <input type="hidden" name="next" value="{{ request.path }}">
                         <select id="language-select" name="language" onchange="this.form.submit()">
@@ -39,8 +38,15 @@
                         </select>
                     </form>
                 </li>
-                <li><a href="{% url 'accounts:login' %}" class="sign-in">{% trans "Sign In" %}</a></li>
-                <li><a href="{% url 'accounts:register' %}" class="sign-up">{% trans "Sign Up" %}</a></li>
+
+                <li class="header-center">
+                    <a href="/" class="head-item">{% trans "Home" %}</a>
+                </li>
+
+                <li class="header-right">
+                    <a href="{% url 'accounts:login' %}" class="sign-in">{% trans "Sign In" %}</a>
+                    <a href="{% url 'accounts:register' %}" class="sign-up">{% trans "Sign Up" %}</a>
+                </li>
             </ul>
         </nav>
     </header> 

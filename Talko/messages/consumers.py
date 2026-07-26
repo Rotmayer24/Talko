@@ -15,12 +15,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chat_{self.room_name}"
 
-        # Reject anonymous users.
         if self.user is None or not self.user.is_authenticated:
             await self.close(code=4001)
             return
 
-        # Reject users that are not members of this chat.
         if not await self.is_member(self.room_name, self.user.id):
             await self.close(code=4003)
             return
@@ -29,7 +27,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     async def disconnect(self, close_code):
-        # group_add only runs after the membership checks pass.
         if hasattr(self, "room_group_name"):
             await self.channel_layer.group_discard(
                 self.room_group_name, self.channel_name
@@ -41,14 +38,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
         except (json.JSONDecodeError, TypeError):
             return
 
-        # The username is always the authenticated user — never trust the client.
         username = self.user.username
         message_type = data.get("message_type", "text")
 
         if message_type == "delete":
             message_id = data.get("message_id")
             if message_id:
-                deleted = await self.delete_message(self.room_name, self.user.id, message_id)
+                deleted = await self.delete_message(
+                    self.room_name, self.user.id, message_id
+                )
                 if deleted:
                     await self.channel_layer.group_send(
                         self.room_group_name,
@@ -81,8 +79,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 },
             )
         elif message_type in ("image", "file", "video"):
-            # The file/image/video was already persisted by the upload_file view.
-            # Validate the referenced message belongs to this chat and user.
             message_id = data.get("message_id")
             payload = await self.get_attachment_payload(
                 self.room_name, self.user.id, message_id
@@ -120,11 +116,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps(response))
 
     async def chat_delete(self, event):
-        await self.send(text_data=json.dumps({
-            "type": "delete",
-            "message_id": event["message_id"],
-            "username": event["username"],
-        }))
+        await self.send(
+            text_data=json.dumps(
+                {
+                    "type": "delete",
+                    "message_id": event["message_id"],
+                    "username": event["username"],
+                }
+            )
+        )
 
     @database_sync_to_async
     def is_member(self, chat_id, user_id):
